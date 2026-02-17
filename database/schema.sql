@@ -33,7 +33,7 @@ CREATE TABLE volunteer_opportunities (
 );
 
 -- VolunteerSignup Table
-CREATE TABLE volunteer_signups (
+CREATE TABLE volunteer (
     signup_id SERIAL PRIMARY KEY,
     opportunity_id INT NOT NULL,
     volunteer_id INT,
