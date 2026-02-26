@@ -4,10 +4,10 @@ CREATE TABLE organizations (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     contact_name VARCHAR(255),
-    contact_email VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     website_url VARCHAR(255),
-    authentication_credentials VARCHAR(255)
+    password VARCHAR(255) NOT NULL
 );
 
 -- VolunteerOpportunity Table
