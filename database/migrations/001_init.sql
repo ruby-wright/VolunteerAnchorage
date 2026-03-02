@@ -1,19 +1,19 @@
 -- Organization Table
 CREATE TABLE organizations (
-    organization_id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    org_id uuid PRIMARY KEY default gen_random_uuid(),
+    name TEXT NOT NULL,
     description TEXT,
-    contact_name VARCHAR(255),
-    contact_email VARCHAR(255),
-    phone_number VARCHAR(20),
-    website_url VARCHAR(255),
-    authentication_credentials VARCHAR(255)
+    contact_name TEXT,
+    contact_email TEXT,
+    phone_number TEXT,
+    website_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL default NOW()
 );
 
 -- VolunteerOpportunity Table
-CREATE TABLE volunteer_opportunities (
-    opportunity_id SERIAL PRIMARY KEY,
-    organization_id INT NOT NULL,
+create table org_member (
+    opportunity_id primary key default gen_random_uuid(),
+    org_id INT NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
     category TEXT,
