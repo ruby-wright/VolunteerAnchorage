@@ -1,4 +1,4 @@
-/*import Message from './Message';  
+import OrganizationAuthPage from './pages/organizations/OrganizationAuthPage';  
 
 function App() {
   return (
@@ -10,4 +10,3 @@ function App() {
 }
 
 export default App;
-*/
