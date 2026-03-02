@@ -1,4 +1,4 @@
-import Message from './Message';  
+/*import Message from './Message';  
 
 function App() {
   return (
@@ -10,3 +10,4 @@ function App() {
 }
 
 export default App;
+*/
