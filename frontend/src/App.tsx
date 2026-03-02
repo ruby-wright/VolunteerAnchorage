@@ -1,5 +1,5 @@
-//import OrganizationAuthPage from './';  
-/* 
+/*import Message from './Message';  
+
 function App() {
   return (
       <div>
