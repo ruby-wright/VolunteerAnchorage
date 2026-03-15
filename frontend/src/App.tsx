@@ -1,7 +1,13 @@
-import Message from './Message';  
+/*import Message from './Message';  
 
 function App() {
-  return <div><Message /></div>;
+  return (
+      <div>
+         <OrganizationAuthPage/>
+      </div>
+   
+  );
 }
 
 export default App;
+*/
