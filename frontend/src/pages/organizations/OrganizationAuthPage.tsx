@@ -6,8 +6,8 @@ import {Fragment} from 'react';
 
 
 function OrganizationAuthPage(){
-    return (
-        <Fragment>
+    return(
+        <Fragment> 
             <h1>Register Your Organization</h1>
             <p>Get connected with volunteers in through Volunteer Anchorage</p>
             <h4>Organization Profile</h4>
@@ -15,7 +15,7 @@ function OrganizationAuthPage(){
 
             <form className = 'form'>
             <div className = "col-md-10">
-                <label htmlFor="organizationName">Organization Name</label>
+                <label htmlFor="organizationName">Organization Name</label> 
                 <input type="text" className="form-control" id="organizationName" placeholder="e.g. Anchorage Volunteer Network"/>
             </div>
             <div className = "col-md-10">
