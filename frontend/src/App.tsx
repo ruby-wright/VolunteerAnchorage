@@ -4,7 +4,7 @@ import OrganizationAuthPage from './pages/organizations/OrganizationAuthPage';
 function App() {
   return (
       <div>
-         <OrganizationAuthPage/>
+         <OrganizationAuthPage/> 
       </div>
    
   );

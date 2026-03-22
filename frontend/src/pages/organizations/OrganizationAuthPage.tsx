@@ -6,7 +6,7 @@ import {Fragment} from 'react';
 
 
 function OrganizationAuthPage(){
-    return(
+    return( 
         <Fragment> 
             <h1>Register Your Organization</h1>
             <p>Get connected with volunteers in through Volunteer Anchorage</p>
