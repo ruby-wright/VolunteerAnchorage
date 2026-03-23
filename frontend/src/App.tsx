@@ -1,10 +1,11 @@
 //import Message from './Message';  
-import OrganizationAuthPage from './pages/organizations/OrganizationAuthPage';
+import NavBar from './components/shared/NavBar';
+//import OrganizationAuthPage from './pages/organizations/OrganizationAuthPage';
 
 function App() {
   return (
       <div>
-         <OrganizationAuthPage/> 
+         <NavBar  /> 
       </div>
    
   );
