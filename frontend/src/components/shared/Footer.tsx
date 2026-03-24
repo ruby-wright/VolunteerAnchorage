@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../assets/logo.png';
 
 function Footer() {
   return (
@@ -8,6 +9,7 @@ function Footer() {
             <section className="">
                 <div className="row">
                 <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <img className="mb-4" src={logo} alt="" width="54" height="50" />
                     <h6 className="mb-4 font-weight-bold">
                     AnchorageVolunteer
                     </h6>
