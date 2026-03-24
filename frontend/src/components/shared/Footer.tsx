@@ -36,6 +36,22 @@ function Footer() {
                 <hr className="w-100 clearfix d-md-none" />
                 <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h6 className="text-uppercase mb-4 font-weight-bold">
+                    Partner with us
+                    </h6>
+                    <p>
+                    <a className="text-dark">
+                        Register Your Organization
+                    </a>
+                    </p>
+                    <p>
+                    <a className="text-dark">
+                        Post a Volunteer Opportunity 
+                    </a>
+                    </p>
+                </div>
+                 <hr className="w-100 clearfix d-md-none" />
+                <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 className="text-uppercase mb-4 font-weight-bold">
                     About
                     </h6>
                     <p>
