@@ -1,11 +1,13 @@
-//import Message from './Message';  
+import Message from './Message';  
 import NavBar from './components/shared/NavBar';
-//import OrganizationAuthPage from './pages/organizations/OrganizationAuthPage';
+import OrganizationAuthPage from './pages/organizations/OrganizationAuthPage';
+import Footer from './components/shared/Footer';
+import VolunteerCards from './components/VolunteerCards';
 
 function App() {
   return (
       <div>
-         <NavBar  /> 
+         <Footer /> 
       </div>
    
   );
