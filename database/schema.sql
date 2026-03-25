@@ -4,10 +4,9 @@ CREATE TABLE organizations (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     contact_name VARCHAR(255),
-    contact_email VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
     phone_number VARCHAR(20),
     website_url VARCHAR(255),
-    authentication_credentials VARCHAR(255)
 );
 
 -- VolunteerOpportunity Table
@@ -32,8 +31,17 @@ CREATE TABLE volunteer_opportunities (
         ON DELETE CASCADE
 );
 
+CREATE TABLE organization_member (
+    org_member_id SERIAL PRIMARY KEY,
+    organization_id INT REFERENCES organizations(organization_id),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role VARCHAR(50) DEFAULT 'admin',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- VolunteerSignup Table
-CREATE TABLE volunteer_signups (
+CREATE TABLE volunteer (
     signup_id SERIAL PRIMARY KEY,
     opportunity_id INT NOT NULL,
     volunteer_id INT,
