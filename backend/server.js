@@ -1,35 +1,27 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const { Pool } = require("pg");
 
-// Authorization routes
-const orgAuthRoutes = require("./routes/orgAuth");
-const opportunitiesRoutes = require("./routes/opportunities");
+const organizationRoutes = require("./routes/organizations");
+const opportunityRoutes = require("./routes/opportunities");
+const volunteerRoutes = require("./routes/volunteers");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-});
 
-pool.connect()
-  .then(() => console.log("Connected to Postgres"))
-  .catch(err => console.error("DB connection error:", err));
-
-// Middleware
+// middleware
 app.use(cors());
 app.use(express.json());
 
-// Testing route
+// test route
 app.get("/", (req, res) => {
-  res.send("VolunteerAnchorage backend is running");
+  res.send("VolunteerAnchorage backend is running with Supabase");
 });
 
-// Mount Authorization Routes
-app.use("/org", orgAuthRoutes); // /org/register, /org/login
-app.use("/opportunities", opportunitiesRoutes);
+// routes
+app.use("/organizations", organizationRoutes);
+app.use("/opportunities", opportunityRoutes);
+app.use("/volunteers", volunteerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
