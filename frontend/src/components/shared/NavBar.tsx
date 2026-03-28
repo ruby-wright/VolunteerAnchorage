@@ -45,17 +45,13 @@ function NavBar() {
             <button className="btn btn-outline-success" type="submit">
               Search
             </button>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <form className="d-flex" role="search">
-            </form>
-            </div>
           </form>
 
         </div>
 
         <div className="dropdown">
           <button
-            className="btn btn-secondary dropdown-toggle"
+            className="btn btn-secondary ms-2 dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
           >
