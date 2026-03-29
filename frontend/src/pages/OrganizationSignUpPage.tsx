@@ -1,6 +1,7 @@
 import "./OrganizationSignUpPage.css";
 import { useState } from "react";
-import type { ChangeEvent, SubmitEvent } from 'react';
+import type { ChangeEvent, SubmitEvent } from "react";
+import { registerOrganization } from "../api/organizations";
 
 type FormData = {
   organizationName: string;
@@ -30,7 +31,7 @@ function OrganizationSignUpPage() {
     }));
   };
 
-  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -38,8 +39,32 @@ function OrganizationSignUpPage() {
       return;
     }
 
-    console.log("Submitted data:", formData);
-  };
+    try {
+      const result = await registerOrganization({
+        name: formData.organizationName,
+        contact_email: formData.contactEmail,
+        password: formData.password,
+        description: "",
+        phone_number: "",
+        website_url: "",
+      });
+
+      alert("Organization registered successfully!");
+      console.log(result);
+      
+      setFormData({
+        organizationName: "",
+        organizationEmail: "",
+        contactName: "",
+        contactEmail: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Something went wrong";
+      alert(message);
+    }
+  }
 
   return (
     <div className="signup-page">
