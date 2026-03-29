@@ -1,7 +1,7 @@
 import "./OrganizationSignUpPage.css";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { registerOrganization } from "../api/organizations";
 
 type FormData = {
   organizationName: string;
@@ -40,35 +40,13 @@ function OrganizationSignUpPage() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.organizationEmail,
+      await registerOrganization({
+        organizationName: formData.organizationName,
+        organizationEmail: formData.organizationEmail,
+        contactName: formData.contactName,
+        contactEmail: formData.contactEmail,
         password: formData.password,
       });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      if (!data.user) {
-        alert("User was not created");
-        return;
-      }
-
-      const { error: insertError } = await supabase.from("organizations").insert([
-        {
-          org_id: data.user.id,
-          name: formData.organizationName,
-          organization_email: formData.organizationEmail,
-          contact_name: formData.contactName,
-          contact_email: formData.contactEmail,
-        },
-      ]);
-
-      if (insertError) {
-        alert(insertError.message);
-        return;
-      }
 
       alert("Organization registered successfully!");
 
