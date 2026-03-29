@@ -24,7 +24,7 @@
 .signup-subtitle {
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #666;
+  color:  #f9fafb;  
 }
 
 .signup-form {
@@ -55,7 +55,7 @@
 
 .form-group input:focus {
   outline: none;
-  background: #119ed5;
+  background:white;
 }
 
 .signup-button {

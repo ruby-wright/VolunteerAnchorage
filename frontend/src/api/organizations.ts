@@ -22,8 +22,8 @@ export async function registerOrganization(formData: {
 
   const { error: insertError } = await supabase.from("organizations").insert([
     {
-      user_id: data.user.id,
-      organization_name: formData.organizationName,
+      org_id: data.user.id,
+      name: formData.organizationName,
       organization_email: formData.organizationEmail,
       contact_name: formData.contactName,
       contact_email: formData.contactEmail,
