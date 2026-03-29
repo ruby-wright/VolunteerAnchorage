@@ -41,6 +41,8 @@ router.post("/register", async (req, res) => {
     const {
       name,
       description,
+      organization_email,
+      contact_name,
       contact_email,
       phone_number,
       website_url,
@@ -78,6 +80,8 @@ router.post("/register", async (req, res) => {
         {
           name,
           description,
+          organization_email,
+          contact_name,
           contact_email,
           phone_number,
           website_url,

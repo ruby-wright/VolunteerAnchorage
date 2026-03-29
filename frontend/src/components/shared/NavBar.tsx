@@ -1,10 +1,49 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, type ChangeEvent } from "react";
+import { signInOrganization } from "../../lib/auth";
 
 function NavBar() {
+  const navigate = useNavigate();
+
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setLoginData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      await signInOrganization(loginData.email, loginData.password);
+
+      alert("Logged in successfully.");
+      setLoginData({ email: "", password: "" });
+      navigate("/home");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Login failed.";
+      alert(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-
         <Link className="navbar-brand" to="/">
           Volunteer Anchorage
         </Link>
@@ -19,9 +58,7 @@ function NavBar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
             <li className="nav-item">
               <Link className="nav-link active" to="/home">
                 Home
@@ -33,43 +70,33 @@ function NavBar() {
                 Opportunities
               </Link>
             </li>
-
           </ul>
-
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <form className="d-flex" role="search">
-            </form>
-            </div>
-          </form>
-
         </div>
 
         <div className="dropdown">
           <button
-            className="btn btn-secondary dropdown-toggle"
+            className="btn btn-secondary ms-2 dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
           >
             Sign In
           </button>
 
-          <div className="dropdown-menu dropdown-menu-end p-4" style={{ minWidth: "250px" }}>
-            <form>
+          <div
+            className="dropdown-menu dropdown-menu-end p-4"
+            style={{ minWidth: "250px" }}
+          >
+            <form onSubmit={handleLogin}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
                 <input
                   type="email"
+                  name="email"
                   className="form-control"
                   placeholder="Enter email"
+                  value={loginData.email}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -77,15 +104,19 @@ function NavBar() {
                 <label className="form-label">Password</label>
                 <input
                   type="password"
+                  name="password"
                   className="form-control"
                   placeholder="Password"
+                  value={loginData.password}
+                  onChange={handleChange}
                 />
               </div>
 
-              <button type="submit" className="btn btn-primary w-100 mb-2">
-                Log In
+              <button type="submit" className="btn btn-primary w-100 mb-2" disabled={loading}>
+                {loading ? "Logging in..." : "Log In"}
               </button>
             </form>
+
             <hr />
 
             <Link to="/signup" className="btn btn-outline-success w-100">
