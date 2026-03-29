@@ -1,7 +1,7 @@
 import "./OrganizationSignUpPage.css";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { supabase } from "../lib/supabaseClient"; 
+import { supabase } from "../lib/supabaseClient";
 
 type FormData = {
   organizationName: string;
@@ -57,8 +57,8 @@ function OrganizationSignUpPage() {
 
       const { error: insertError } = await supabase.from("organizations").insert([
         {
-          user_id: data.user.id,
-          organization_name: formData.organizationName,
+          org_id: data.user.id,
+          name: formData.organizationName,
           organization_email: formData.organizationEmail,
           contact_name: formData.contactName,
           contact_email: formData.contactEmail,
@@ -80,9 +80,9 @@ function OrganizationSignUpPage() {
         password: "",
         confirmPassword: "",
       });
-
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Something went wrong";
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
       alert(message);
     }
   };
@@ -124,7 +124,6 @@ function OrganizationSignUpPage() {
             />
           </div>
 
-          {/* Primary Contact */}
           <h3 className="section-title">Primary Contact</h3>
 
           <div className="form-group">
