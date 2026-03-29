@@ -24,5 +24,5 @@ app.use("/opportunities", opportunityRoutes);
 app.use("/volunteers", volunteerRoutes);
 
 app.listen(PORT, () => {
-  console.log("Server running on port 5050");
+  console.log(`Server running on port ${PORT}`);
 });
