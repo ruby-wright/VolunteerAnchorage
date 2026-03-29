@@ -1,7 +1,7 @@
 import "./OrganizationSignUpPage.css";
 import { useState } from "react";
-import type { ChangeEvent, SubmitEvent } from "react";
-import { registerOrganization } from "../api/organizations";
+import type { ChangeEvent } from "react";
+import { supabase } from "../lib/supabaseClient"; 
 
 type FormData = {
   organizationName: string;
@@ -31,7 +31,7 @@ function OrganizationSignUpPage() {
     }));
   };
 
-  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -40,18 +40,38 @@ function OrganizationSignUpPage() {
     }
 
     try {
-      const result = await registerOrganization({
-        name: formData.organizationName,
-        contact_email: formData.contactEmail,
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.organizationEmail,
         password: formData.password,
-        description: "",
-        phone_number: "",
-        website_url: "",
       });
 
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      if (!data.user) {
+        alert("User was not created");
+        return;
+      }
+
+      const { error: insertError } = await supabase.from("organizations").insert([
+        {
+          user_id: data.user.id,
+          organization_name: formData.organizationName,
+          organization_email: formData.organizationEmail,
+          contact_name: formData.contactName,
+          contact_email: formData.contactEmail,
+        },
+      ]);
+
+      if (insertError) {
+        alert(insertError.message);
+        return;
+      }
+
       alert("Organization registered successfully!");
-      console.log(result);
-      
+
       setFormData({
         organizationName: "",
         organizationEmail: "",
@@ -60,11 +80,12 @@ function OrganizationSignUpPage() {
         password: "",
         confirmPassword: "",
       });
+
     } catch (error) {
       const message = error instanceof Error ? error.message : "Something went wrong";
       alert(message);
     }
-  }
+  };
 
   return (
     <div className="signup-page">
@@ -75,8 +96,6 @@ function OrganizationSignUpPage() {
         </p>
 
         <form className="signup-form" onSubmit={handleSubmit}>
-          
-          {/* Organization Info */}
           <h3 className="section-title">Organization Info</h3>
 
           <div className="form-group">
