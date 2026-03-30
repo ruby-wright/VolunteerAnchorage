@@ -3,6 +3,7 @@ import NavBar from "./components/shared/NavBar";
 import OrganizationSignUpPage from "./pages/OrganizationSignUpPage";
 import HomePage from "./pages/HomePage";
 import Footer from './components/shared/Footer';
+import ConnectForm from "./pages/ConnectForm";
 
 function Opportunities() {
   return <div></div>;
@@ -16,6 +17,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/opportunities" element={<Opportunities />} />
         <Route path="/signup" element={<OrganizationSignUpPage />} />
+        <Route path="/connect" element={<ConnectForm />} />
       </Routes>
       <Footer /> 
 
