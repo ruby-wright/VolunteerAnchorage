@@ -18,6 +18,7 @@ function App() {
         <Route path="/opportunities" element={<Opportunities />} />
         <Route path="/signup" element={<OrganizationSignUpPage />} />
         <Route path="/connect" element={<ConnectForm />} />
+        <Route path="/connect/:id" element={<ConnectForm />} />
       </Routes>
       <Footer /> 
 
