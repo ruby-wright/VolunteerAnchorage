@@ -40,3 +40,16 @@ export async function registerOrganization(
 
   return user;
 }
+
+export async function signInOrganization(email: string, password: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
