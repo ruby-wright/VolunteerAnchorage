@@ -1,8 +1,34 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import SignInDropdown from "../SignInDropDown";
+import { supabase } from "../../lib/supabaseClient";
 
 function NavBar() {
+  const [user, setUser] = useState<null | { email?: string }>(null);
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user ? { email: user.email } : null);
+    };
+
+    getCurrentUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ? { email: session.user.email } : null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -19,10 +45,7 @@ function NavBar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div
-          className="collapse navbar-collapse"
-          id="navbarTogglerDemo02"
-        >
+        <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link active" to="/home">
@@ -36,6 +59,13 @@ function NavBar() {
               </Link>
             </li>
 
+            {user && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/your-opportunities">
+                  Your Opportunities
+                </Link>
+              </li>
+            )}
             <li className="nav-item">
               <Link className="nav-link active" to="/connect">
                 Connect
