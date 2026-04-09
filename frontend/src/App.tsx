@@ -4,6 +4,7 @@ import OrganizationSignUpPage from "./pages/OrganizationSignUpPage";
 import HomePage from "./pages/HomePage";
 import YourOpportunitiesPage from "./pages/YourOpportunitiesPage";
 import Footer from './components/shared/Footer';
+import ConnectForm from "./pages/ConnectForm";
 
 function Opportunities() {
   return <div></div>;
@@ -18,6 +19,8 @@ function App() {
         <Route path="/opportunities" element={<Opportunities />} />
         <Route path="/your-opportunities" element={<YourOpportunitiesPage />} />
         <Route path="/signup" element={<OrganizationSignUpPage />} />
+        <Route path="/connect" element={<ConnectForm />} />
+        <Route path="/connect/:opportunityId" element={<ConnectForm />} />
       </Routes>
       <Footer /> 
 

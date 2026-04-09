@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate();
   return (
     <main role="main">
         <img
@@ -46,6 +49,7 @@ function HomePage() {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
+                          onClick={() => navigate(`/connect/${index}`)}
                         >
                           View Details
                         </button>
