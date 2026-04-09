@@ -35,6 +35,12 @@ function NavBar() {
                 Opportunities
               </Link>
             </li>
+
+            <li className="nav-item">
+              <Link className="nav-link active" to="/connect">
+                Connect
+              </Link>
+            </li>
           </ul>
 
           <SignInDropdown />
