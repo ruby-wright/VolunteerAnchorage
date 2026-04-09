@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/shared/NavBar";
 import OrganizationSignUpPage from "./pages/OrganizationSignUpPage";
 import HomePage from "./pages/HomePage";
+import YourOpportunitiesPage from "./pages/YourOpportunitiesPage";
 import Footer from './components/shared/Footer';
 
 function Opportunities() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/opportunities" element={<Opportunities />} />
+        <Route path="/your-opportunities" element={<YourOpportunitiesPage />} />
         <Route path="/signup" element={<OrganizationSignUpPage />} />
       </Routes>
       <Footer /> 

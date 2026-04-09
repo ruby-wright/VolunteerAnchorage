@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signInOrganization } from "../lib/auth";
 import { supabase } from "../lib/supabaseClient";
 
@@ -71,7 +71,13 @@ function SignInDropdown() {
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      setLoading(true);
+
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        throw error;
+      }
 
       setUser(null);
       setLoginData({
@@ -85,6 +91,8 @@ function SignInDropdown() {
       const message =
         error instanceof Error ? error.message : "Sign out failed.";
       alert(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,6 +103,7 @@ function SignInDropdown() {
         type="button"
         data-bs-toggle="dropdown"
         data-bs-auto-close="true"
+        disabled={loading}
       >
         {user ? "Account" : "Sign In"}
       </button>
@@ -111,8 +120,9 @@ function SignInDropdown() {
               type="button"
               className="btn btn-danger w-100"
               onClick={handleLogout}
+              disabled={loading}
             >
-              Sign Out
+              {loading ? "Signing out..." : "Sign Out"}
             </button>
           </>
         ) : (
@@ -151,9 +161,9 @@ function SignInDropdown() {
 
             <hr />
 
-            <a href="/signup" className="btn btn-outline-success w-100">
+            <Link to="/signup" className="btn btn-outline-success w-100">
               Create Account
-            </a>
+            </Link>
           </>
         )}
       </div>
