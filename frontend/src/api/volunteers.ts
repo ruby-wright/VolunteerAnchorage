@@ -1,23 +1,26 @@
 import { supabase } from "../lib/supabaseClient";
 
-type RegisterVolunteerData = {
-  opportunityId: string;
-  firstName: string;
-  lastName: string;
+export type VolunteerSignupPayload = {
+  opportunity_id: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
   notes: string;
 };
 
-export async function registerVolunteer(formData: RegisterVolunteerData) {
-  const { data, error } = await supabase.from("volunteer_info").insert({
-    opportunity_id: formData.opportunityId,
-    first_name: formData.firstName,
-    last_name: formData.lastName,
-    email: formData.email,
-    phone_number: formData.phoneNumber,
-    notes: formData.notes,
-  });
+export async function registerVolunteer(formData: VolunteerSignupPayload) {
+  const { data, error } = await supabase
+    .from("volunteer_info")
+    .insert({
+      opportunity_id: formData.opportunity_id,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email,
+      phone_number: formData.phone_number,
+      notes: formData.notes,
+    })
+    .select();
 
   if (error) {
     throw new Error(error.message);

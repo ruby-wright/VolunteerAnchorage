@@ -43,7 +43,7 @@ function HomePage() {
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-secondary"
-                          //onClick={() => navigate(`/connect/${opportunity.opportunity_id}`)}
+                          onClick={() => navigate(`/connect/${index}`)}
                         >
                           View Details
                         </button>

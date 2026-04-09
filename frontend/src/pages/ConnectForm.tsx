@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { registerVolunteer } from "../api/volunteers";
 
 interface OpportunityDetails {
+  opportunityId: string;
   organizationName: string;
   email: string;
   phone: string;
@@ -20,7 +23,7 @@ interface FormData {
   message: string;
 }
 
-const opportunityData: OpportunityDetails = {
+const opportunityData: Omit<OpportunityDetails, "opportunityId"> = {
   organizationName: "Anchorage Environmental Stewards",
   email: "contact@anchorage-stewards.org",
   phone: "(907) 555-6789",
@@ -89,12 +92,18 @@ function CheckIcon() {
 function BackArrowIcon() {
   return (
     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-      <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+      <path
+        fillRule="evenodd"
+        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+      />
     </svg>
   );
 }
 
 export default function ConnectForm() {
+  const navigate = useNavigate();
+  const { opportunityId } = useParams<{ opportunityId: string }>();
+
   const [form, setForm] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -102,17 +111,52 @@ export default function ConnectForm() {
     phone: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const opp = opportunityData;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const opp: OpportunityDetails = {
+    opportunityId: opportunityId || "",
+    ...opportunityData,
   };
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError("");
+
+    if (!opportunityId) {
+      setError("Missing opportunity ID.");
+      return;
+    }
+
+    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim()) {
+      setError("First name, last name, and email are required.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await registerVolunteer({
+        opportunity_id: opportunityId,
+        first_name: form.firstName.trim(),
+        last_name: form.lastName.trim(),
+        email: form.email.trim(),
+        phone_number: form.phone.trim(),
+        notes: form.message.trim(),
+      });
+
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong while submitting.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -138,29 +182,34 @@ export default function ConnectForm() {
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI', sans-serif", color: "#222" }}>
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 24px" }}>
-
-        {/* Page Title */}
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 28, color: "#111" }}>
           Connect with {opp.organizationName}
         </h1>
 
-        {/* Back Button */}
         <button
+          type="button"
+          onClick={() => navigate(-1)}
           style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            border: "1px solid #ced4da", borderRadius: 6,
-            background: "#fff", padding: "8px 16px",
-            fontSize: 14, color: "#444", cursor: "pointer",
-            marginBottom: 36, fontWeight: 500,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            border: "1px solid #ced4da",
+            borderRadius: 6,
+            background: "#fff",
+            padding: "8px 16px",
+            fontSize: 14,
+            color: "#444",
+            cursor: "pointer",
+            marginBottom: 36,
+            fontWeight: 500,
           }}
-          onMouseOver={e => (e.currentTarget.style.background = "#f8f9fa")}
-          onMouseOut={e => (e.currentTarget.style.background = "#fff")}
+          onMouseOver={(e) => (e.currentTarget.style.background = "#f8f9fa")}
+          onMouseOut={(e) => (e.currentTarget.style.background = "#fff")}
         >
           <BackArrowIcon />
           Back to Opportunity Details
         </button>
 
-        {/* Two-column layout */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
           <div>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>
@@ -170,7 +219,9 @@ export default function ConnectForm() {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14 }}>
                 <EmailIcon />
-                <a href={`mailto:${opp.email}`} style={{ color: "#222", textDecoration: "none" }}>{opp.email}</a>
+                <a href={`mailto:${opp.email}`} style={{ color: "#222", textDecoration: "none" }}>
+                  {opp.email}
+                </a>
               </div>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14 }}>
                 <PhoneIcon />
@@ -178,28 +229,45 @@ export default function ConnectForm() {
               </div>
             </div>
 
-            {/* Opportunity Details Box */}
-            <div style={{
-              border: "1px solid #e9ecef", borderRadius: 10,
-              padding: "20px 22px", background: "#fafbfc",
-            }}>
-              <p style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.8, color: "#888", marginBottom: 8 }}>
+            <div
+              style={{
+                border: "1px solid #e9ecef",
+                borderRadius: 10,
+                padding: "20px 22px",
+                background: "#fafbfc",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: 0.8,
+                  color: "#888",
+                  marginBottom: 8,
+                }}
+              >
                 Opportunity Details
               </p>
+
               <h3 style={{ fontSize: 18, fontWeight: 800, color: "#111", marginBottom: 16 }}>
                 {opp.opportunityTitle}
               </h3>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 18 }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
-                  <CalendarIcon /><span>{opp.date}</span>
+                  <CalendarIcon />
+                  <span>{opp.date}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
-                  <PinIcon /><span>{opp.location}</span>
+                  <PinIcon />
+                  <span>{opp.location}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
                   <PeopleIcon />
-                  <span>Up to {opp.spotsTotal} volunteers, {opp.spotsRemaining} spots remaining</span>
+                  <span>
+                    Up to {opp.spotsTotal} volunteers, {opp.spotsRemaining} spots remaining
+                  </span>
                 </div>
               </div>
 
@@ -207,22 +275,27 @@ export default function ConnectForm() {
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                 {opp.requirements.map((req, i) => (
                   <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
-                    <CheckIcon /><span>{req}</span>
+                    <CheckIcon />
+                    <span>{req}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* RIGHT: Application Form */}
           <div>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 22 }}>Your Information</h2>
 
             {submitted ? (
-              <div style={{
-                background: "#e8f5e9", border: "1px solid #a5d6a7",
-                borderRadius: 10, padding: "24px 20px", textAlign: "center",
-              }}>
+              <div
+                style={{
+                  background: "#e8f5e9",
+                  border: "1px solid #a5d6a7",
+                  borderRadius: 10,
+                  padding: "24px 20px",
+                  textAlign: "center",
+                }}
+              >
                 <div style={{ fontSize: 40, marginBottom: 10 }}>✅</div>
                 <h3 style={{ color: "#2e7d32", fontWeight: 700, fontSize: 17 }}>Application Submitted!</h3>
                 <p style={{ color: "#388e3c", fontSize: 14, marginTop: 6 }}>
@@ -231,79 +304,115 @@ export default function ConnectForm() {
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                {error && (
+                  <div
+                    style={{
+                      background: "#fdecea",
+                      color: "#b71c1c",
+                      border: "1px solid #f5c2c7",
+                      borderRadius: 8,
+                      padding: "10px 12px",
+                      fontSize: 14,
+                    }}
+                  >
+                    {error}
+                  </div>
+                )}
 
-                {/* First + Last Name row */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                   <div>
                     <label style={labelStyle}>First Name</label>
                     <input
-                      name="firstName" value={form.firstName} onChange={handleChange}
-                      placeholder="John" style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = "#2196f3")}
-                      onBlur={e => (e.target.style.borderColor = "#dee2e6")}
+                      name="firstName"
+                      value={form.firstName}
+                      onChange={handleChange}
+                      placeholder="John"
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
+                      onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
                     />
                   </div>
                   <div>
                     <label style={labelStyle}>Last Name</label>
                     <input
-                      name="lastName" value={form.lastName} onChange={handleChange}
-                      placeholder="Doe" style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = "#2196f3")}
-                      onBlur={e => (e.target.style.borderColor = "#dee2e6")}
+                      name="lastName"
+                      value={form.lastName}
+                      onChange={handleChange}
+                      placeholder="Doe"
+                      style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
+                      onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
                     />
                   </div>
                 </div>
 
-                {/* Email */}
                 <div>
                   <label style={labelStyle}>Email</label>
                   <input
-                    name="email" type="email" value={form.email} onChange={handleChange}
-                    placeholder="john.doe@example.com" style={inputStyle}
-                    onFocus={e => (e.target.style.borderColor = "#2196f3")}
-                    onBlur={e => (e.target.style.borderColor = "#dee2e6")}
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="john.doe@example.com"
+                    style={inputStyle}
+                    onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
+                    onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
                   />
                 </div>
 
-                {/* Phone */}
                 <div>
                   <label style={labelStyle}>Phone Number</label>
                   <input
-                    name="phone" type="tel" value={form.phone} onChange={handleChange}
-                    placeholder="(907) 123-4567" style={inputStyle}
-                    onFocus={e => (e.target.style.borderColor = "#2196f3")}
-                    onBlur={e => (e.target.style.borderColor = "#dee2e6")}
+                    name="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="(907) 123-4567"
+                    style={inputStyle}
+                    onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
+                    onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
                   />
                 </div>
 
-                {/* Message */}
                 <div>
                   <label style={labelStyle}>Message / Cover Letter</label>
                   <textarea
-                    name="message" value={form.message} onChange={handleChange}
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
                     placeholder="Tell us why you're interested in this opportunity..."
                     rows={5}
                     style={{ ...inputStyle, resize: "vertical", fontFamily: "inherit" }}
-                    onFocus={e => (e.target.style.borderColor = "#2196f3")}
-                    onBlur={e => (e.target.style.borderColor = "#dee2e6")}
+                    onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
+                    onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
                   />
                 </div>
 
-                {/* Submit */}
                 <button
+                  type="button"
                   onClick={handleSubmit}
+                  disabled={loading}
                   style={{
-                    background: "#2196f3", color: "#fff",
-                    border: "none", borderRadius: 8,
-                    padding: "13px", fontSize: 15,
-                    fontWeight: 700, cursor: "pointer",
-                    width: "100%", letterSpacing: 0.3,
+                    background: loading ? "#90caf9" : "#2196f3",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "13px",
+                    fontSize: 15,
+                    fontWeight: 700,
+                    cursor: loading ? "not-allowed" : "pointer",
+                    width: "100%",
+                    letterSpacing: 0.3,
                     transition: "background 0.15s",
                   }}
-                  onMouseOver={e => (e.currentTarget.style.background = "#1976d2")}
-                  onMouseOut={e => (e.currentTarget.style.background = "#2196f3")}
+                  onMouseOver={(e) => {
+                    if (!loading) e.currentTarget.style.background = "#1976d2";
+                  }}
+                  onMouseOut={(e) => {
+                    if (!loading) e.currentTarget.style.background = "#2196f3";
+                  }}
                 >
-                  Submit Application
+                  {loading ? "Submitting..." : "Submit Application"}
                 </button>
               </div>
             )}
