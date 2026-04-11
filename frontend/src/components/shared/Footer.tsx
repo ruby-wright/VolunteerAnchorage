@@ -31,7 +31,7 @@ function Footer() {
           <div className="row d-flex align-items-center">
             <div className="col-md-12 text-center">
               <div className="p-3">
-                © 2026 AnchorageVolunteer. All Rights Reserved
+                ©2026 VolunteerAnchorage. All Rights Reserved.
               </div>
             </div>
           </div>

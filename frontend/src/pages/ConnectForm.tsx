@@ -43,7 +43,7 @@ const opportunityData: Omit<OpportunityDetails, "opportunityId"> = {
 
 function EmailIcon() {
   return (
-    <svg width="16" height="16" fill="#2196f3" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}>
+    <svg width="16" height="16" fill="#2563eb" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}>
       <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z" />
     </svg>
   );
@@ -51,7 +51,7 @@ function EmailIcon() {
 
 function PhoneIcon() {
   return (
-    <svg width="16" height="16" fill="#2196f3" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}>
+    <svg width="16" height="16" fill="#2563eb" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}>
       <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z" />
     </svg>
   );
@@ -59,7 +59,7 @@ function PhoneIcon() {
 
 function CalendarIcon() {
   return (
-    <svg width="15" height="15" fill="#2196f3" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 1 }}>
+    <svg width="15" height="15" fill="#2563eb" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 1 }}>
       <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
     </svg>
   );
@@ -67,7 +67,7 @@ function CalendarIcon() {
 
 function PinIcon() {
   return (
-    <svg width="15" height="15" fill="#2196f3" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 1 }}>
+    <svg width="15" height="15" fill="#2563eb" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 1 }}>
       <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
     </svg>
   );
@@ -75,7 +75,7 @@ function PinIcon() {
 
 function PeopleIcon() {
   return (
-    <svg width="15" height="15" fill="#2196f3" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 1 }}>
+    <svg width="15" height="15" fill="#2563eb" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 1 }}>
       <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
     </svg>
   );
@@ -83,7 +83,7 @@ function PeopleIcon() {
 
 function CheckIcon() {
   return (
-    <svg width="15" height="15" fill="#2196f3" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}>
+    <svg width="15" height="15" fill="#2563eb" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}>
       <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
     </svg>
   );
@@ -121,7 +121,9 @@ export default function ConnectForm() {
     ...opportunityData,
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -161,11 +163,11 @@ export default function ConnectForm() {
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
-    border: "1px solid #dee2e6",
-    borderRadius: 6,
+    border: "1px solid #d1d5db",
+    borderRadius: 8,
     padding: "10px 12px",
     fontSize: 14,
-    color: "#333",
+    color: "#111827",
     outline: "none",
     boxSizing: "border-box",
     transition: "border-color 0.15s",
@@ -175,66 +177,75 @@ export default function ConnectForm() {
     display: "block",
     fontSize: 13,
     fontWeight: 600,
-    color: "#333",
+    color: "#111827",
     marginBottom: 6,
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI', sans-serif", color: "#222" }}>
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 24px" }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 28, color: "#111" }}>
-          Connect with {opp.organizationName}
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#f8fafc",
+        fontFamily: "'Segoe UI', sans-serif",
+        color: "#111827",
+      }}
+    >
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "40px 24px" }}>
+        <h1
+          style={{
+            fontSize: 30,
+            fontWeight: 800,
+            marginBottom: 28,
+            color: "#111827",
+          }}
+        >
+          Volunteer for This Opportunity
         </h1>
 
         <button
           type="button"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/opportunities")}
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: 8,
-            border: "1px solid #ced4da",
-            borderRadius: 6,
+            border: "1px solid #d1d5db",
+            borderRadius: 8,
             background: "#fff",
             padding: "8px 16px",
             fontSize: 14,
-            color: "#444",
+            color: "#374151",
             cursor: "pointer",
             marginBottom: 36,
             fontWeight: 500,
           }}
-          onMouseOver={(e) => (e.currentTarget.style.background = "#f8f9fa")}
+          onMouseOver={(e) => (e.currentTarget.style.background = "#f9fafb")}
           onMouseOut={(e) => (e.currentTarget.style.background = "#fff")}
         >
           <BackArrowIcon />
-          Back to Opportunity Details
+          Back to Opportunities
         </button>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 40,
+            alignItems: "start",
+          }}
+        >
           <div>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>
-              Contact {opp.organizationName}
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>
+              Opportunity Details
             </h2>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14 }}>
-                <EmailIcon />
-                <a href={`mailto:${opp.email}`} style={{ color: "#222", textDecoration: "none" }}>
-                  {opp.email}
-                </a>
-              </div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14 }}>
-                <PhoneIcon />
-                <span>{opp.phone}</span>
-              </div>
-            </div>
 
             <div
               style={{
-                border: "1px solid #e9ecef",
-                borderRadius: 10,
-                padding: "20px 22px",
-                background: "#fafbfc",
+                border: "1px solid #e5e7eb",
+                borderRadius: 14,
+                padding: "22px",
+                background: "#fff",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
               }}
             >
               <p
@@ -243,38 +254,156 @@ export default function ConnectForm() {
                   fontWeight: 700,
                   textTransform: "uppercase",
                   letterSpacing: 0.8,
-                  color: "#888",
+                  color: "#2563eb",
                   marginBottom: 8,
                 }}
               >
                 Opportunity Details
               </p>
 
-              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#111", marginBottom: 16 }}>
+              <h3
+                style={{
+                  fontSize: 22,
+                  fontWeight: 800,
+                  color: "#111827",
+                  marginBottom: 16,
+                }}
+              >
                 {opp.opportunityTitle}
               </h3>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 18 }}>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  marginBottom: 20,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 8,
+                    fontSize: 14,
+                    color: "#374151",
+                  }}
+                >
                   <CalendarIcon />
                   <span>{opp.date}</span>
                 </div>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 8,
+                    fontSize: 14,
+                    color: "#374151",
+                  }}
+                >
                   <PinIcon />
                   <span>{opp.location}</span>
                 </div>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 8,
+                    fontSize: 14,
+                    color: "#374151",
+                  }}
+                >
                   <PeopleIcon />
                   <span>
-                    Up to {opp.spotsTotal} volunteers, {opp.spotsRemaining} spots remaining
+                    Up to {opp.spotsTotal} volunteers, {opp.spotsRemaining} spots
+                    remaining
                   </span>
                 </div>
               </div>
 
-              <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 10, color: "#222" }}>Requirements:</p>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+              <h4
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  marginBottom: 10,
+                  color: "#111827",
+                }}
+              >
+                Contact Information
+              </h4>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  marginBottom: 22,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 10,
+                    fontSize: 14,
+                  }}
+                >
+                  <EmailIcon />
+                  <a
+                    href={`mailto:${opp.email}`}
+                    style={{ color: "#111827", textDecoration: "none" }}
+                  >
+                    {opp.email}
+                  </a>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 10,
+                    fontSize: 14,
+                  }}
+                >
+                  <PhoneIcon />
+                  <span>{opp.phone}</span>
+                </div>
+              </div>
+
+              <p
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  marginBottom: 10,
+                  color: "#111827",
+                }}
+              >
+                Requirements
+              </p>
+
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
+                }}
+              >
                 {opp.requirements.map((req, i) => (
-                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, color: "#333" }}>
+                  <li
+                    key={i}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 8,
+                      fontSize: 14,
+                      color: "#374151",
+                    }}
+                  >
                     <CheckIcon />
                     <span>{req}</span>
                   </li>
@@ -284,32 +413,54 @@ export default function ConnectForm() {
           </div>
 
           <div>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 22 }}>Your Information</h2>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}>
+              Your Information
+            </h2>
 
             {submitted ? (
               <div
                 style={{
-                  background: "#e8f5e9",
-                  border: "1px solid #a5d6a7",
-                  borderRadius: 10,
+                  background: "#ecfdf5",
+                  border: "1px solid #a7f3d0",
+                  borderRadius: 12,
                   padding: "24px 20px",
                   textAlign: "center",
                 }}
               >
                 <div style={{ fontSize: 40, marginBottom: 10 }}>✅</div>
-                <h3 style={{ color: "#2e7d32", fontWeight: 700, fontSize: 17 }}>Application Submitted!</h3>
-                <p style={{ color: "#388e3c", fontSize: 14, marginTop: 6 }}>
-                  Thank you, {form.firstName}! {opp.organizationName} will be in touch soon.
+                <h3
+                  style={{
+                    color: "#047857",
+                    fontWeight: 700,
+                    fontSize: 18,
+                  }}
+                >
+                  Application Submitted!
+                </h3>
+                <p style={{ color: "#065f46", fontSize: 14, marginTop: 6 }}>
+                  Thank you, {form.firstName}! Your volunteer information has
+                  been submitted successfully.
                 </p>
               </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              <div
+                style={{
+                  background: "#fff",
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 14,
+                  padding: 22,
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 18,
+                }}
+              >
                 {error && (
                   <div
                     style={{
-                      background: "#fdecea",
-                      color: "#b71c1c",
-                      border: "1px solid #f5c2c7",
+                      background: "#fef2f2",
+                      color: "#b91c1c",
+                      border: "1px solid #fecaca",
                       borderRadius: 8,
                       padding: "10px 12px",
                       fontSize: 14,
@@ -319,7 +470,13 @@ export default function ConnectForm() {
                   </div>
                 )}
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 14,
+                  }}
+                >
                   <div>
                     <label style={labelStyle}>First Name</label>
                     <input
@@ -328,10 +485,11 @@ export default function ConnectForm() {
                       onChange={handleChange}
                       placeholder="John"
                       style={inputStyle}
-                      onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
-                      onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
+                      onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                      onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
                     />
                   </div>
+
                   <div>
                     <label style={labelStyle}>Last Name</label>
                     <input
@@ -340,8 +498,8 @@ export default function ConnectForm() {
                       onChange={handleChange}
                       placeholder="Doe"
                       style={inputStyle}
-                      onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
-                      onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
+                      onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                      onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
                     />
                   </div>
                 </div>
@@ -355,8 +513,8 @@ export default function ConnectForm() {
                     onChange={handleChange}
                     placeholder="john.doe@example.com"
                     style={inputStyle}
-                    onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
-                    onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
+                    onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                    onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
                   />
                 </div>
 
@@ -369,8 +527,8 @@ export default function ConnectForm() {
                     onChange={handleChange}
                     placeholder="(907) 123-4567"
                     style={inputStyle}
-                    onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
-                    onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
+                    onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                    onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
                   />
                 </div>
 
@@ -382,9 +540,13 @@ export default function ConnectForm() {
                     onChange={handleChange}
                     placeholder="Tell us why you're interested in this opportunity..."
                     rows={5}
-                    style={{ ...inputStyle, resize: "vertical", fontFamily: "inherit" }}
-                    onFocus={(e) => (e.target.style.borderColor = "#2196f3")}
-                    onBlur={(e) => (e.target.style.borderColor = "#dee2e6")}
+                    style={{
+                      ...inputStyle,
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                    onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
                   />
                 </div>
 
@@ -393,7 +555,7 @@ export default function ConnectForm() {
                   onClick={handleSubmit}
                   disabled={loading}
                   style={{
-                    background: loading ? "#90caf9" : "#2196f3",
+                    background: loading ? "#93c5fd" : "#2563eb",
                     color: "#fff",
                     border: "none",
                     borderRadius: 8,
@@ -406,10 +568,10 @@ export default function ConnectForm() {
                     transition: "background 0.15s",
                   }}
                   onMouseOver={(e) => {
-                    if (!loading) e.currentTarget.style.background = "#1976d2";
+                    if (!loading) e.currentTarget.style.background = "#1d4ed8";
                   }}
                   onMouseOut={(e) => {
-                    if (!loading) e.currentTarget.style.background = "#2196f3";
+                    if (!loading) e.currentTarget.style.background = "#2563eb";
                   }}
                 >
                   {loading ? "Submitting..." : "Submit Application"}
