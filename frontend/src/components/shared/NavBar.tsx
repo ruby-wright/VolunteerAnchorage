@@ -124,21 +124,6 @@ function NavBar() {
                 </NavLink>
               </li>
             )}
-
-            <li className="nav-item">
-              <NavLink
-                to="/connect"
-                className="nav-link"
-                style={({ isActive }) => ({
-                  ...linkStyle,
-                  color: isActive ? "#2563eb" : "#374151",
-                  fontWeight: isActive ? 700 : 600,
-                  background: isActive ? "#eff6ff" : "transparent",
-                })}
-              >
-                Connect
-              </NavLink>
-            </li>
           </ul>
 
           {/* Right Side */}

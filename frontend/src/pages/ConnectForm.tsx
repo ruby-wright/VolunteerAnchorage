@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "../lib/supabaseClient";
 import { registerVolunteer } from "../api/volunteers";
 
 interface OpportunityDetails {
@@ -22,24 +23,6 @@ interface FormData {
   phone: string;
   message: string;
 }
-
-const opportunityData: Omit<OpportunityDetails, "opportunityId"> = {
-  organizationName: "Anchorage Environmental Stewards",
-  email: "contact@anchorage-stewards.org",
-  phone: "(907) 555-6789",
-  opportunityTitle: "Community River Cleanup Initiative",
-  date: "Saturday, October 26, 2024 (9:00 AM - 1:00 PM)",
-  location: "Ship Creek Trailhead, Anchorage",
-  spotsTotal: 30,
-  spotsRemaining: 15,
-  requirements: [
-    "Ages 16+ (minors need parental consent)",
-    "Ability to walk on uneven terrain and lift up to 20 lbs",
-    "Wear weather-appropriate clothing (waterproof suggested)",
-    "No prior experience needed; training provided on site",
-    "Bring your own water bottle (refill stations available)",
-  ],
-};
 
 function EmailIcon() {
   return (
@@ -114,12 +97,75 @@ export default function ConnectForm() {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState("");
+  const [opp, setOpp] = useState<OpportunityDetails | null>(null);
 
-  const opp: OpportunityDetails = {
-    opportunityId: opportunityId || "",
-    ...opportunityData,
-  };
+  useEffect(() => {
+    const fetchOpportunity = async () => {
+      if (!opportunityId) {
+        setError("Missing opportunity ID.");
+        setPageLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("volunteer_opportunities")
+          .select(`
+            opportunity_id,
+            title,
+            date,
+            location,
+            age_requirements,
+            start_time,
+            end_time,
+            organizations (
+              name,
+              contact_email,
+              phone_number
+            )
+          `)
+          .eq("opportunity_id", opportunityId)
+          .single();
+
+        if (error) throw error;
+
+        const organization = Array.isArray(data.organizations)
+          ? data.organizations[0]
+          : data.organizations;
+
+        const requirementList = [
+          data.age_requirements
+            ? `Age requirement: ${data.age_requirements}`
+            : "Age requirement not specified",
+          data.start_time && data.end_time
+            ? `Time: ${data.start_time} - ${data.end_time}`
+            : "Time will be shared by the organization",
+        ];
+
+        setOpp({
+          opportunityId: data.opportunity_id,
+          organizationName: organization?.name ?? "Organization",
+          email: organization?.contact_email ?? "Not provided",
+          phone: organization?.phone_number ?? "Not provided",
+          opportunityTitle: data.title ?? "Volunteer Opportunity",
+          date: data.date ?? "Date not provided",
+          location: data.location ?? "Location not provided",
+          spotsTotal: 0,
+          spotsRemaining: 0,
+          requirements: requirementList,
+        });
+      } catch (err) {
+        console.error("Error fetching opportunity:", err);
+        setError("Could not load this opportunity.");
+      } finally {
+        setPageLoading(false);
+      }
+    };
+
+    fetchOpportunity();
+  }, [opportunityId]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -180,6 +226,95 @@ export default function ConnectForm() {
     color: "#111827",
     marginBottom: 6,
   };
+
+  if (pageLoading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#f8fafc",
+          fontFamily: "'Segoe UI', sans-serif",
+          color: "#111827",
+        }}
+      >
+        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "40px 24px" }}>
+          <h1
+            style={{
+              fontSize: 30,
+              fontWeight: 800,
+              marginBottom: 28,
+              color: "#111827",
+            }}
+          >
+            Volunteer for This Opportunity
+          </h1>
+          <p style={{ color: "#6b7280" }}>Loading opportunity details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!opp) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#f8fafc",
+          fontFamily: "'Segoe UI', sans-serif",
+          color: "#111827",
+        }}
+      >
+        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "40px 24px" }}>
+          <h1
+            style={{
+              fontSize: 30,
+              fontWeight: 800,
+              marginBottom: 28,
+              color: "#111827",
+            }}
+          >
+            Volunteer for This Opportunity
+          </h1>
+
+          <button
+            type="button"
+            onClick={() => navigate("/opportunities")}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              border: "1px solid #d1d5db",
+              borderRadius: 8,
+              background: "#fff",
+              padding: "8px 16px",
+              fontSize: 14,
+              color: "#374151",
+              cursor: "pointer",
+              marginBottom: 24,
+              fontWeight: 500,
+            }}
+          >
+            <BackArrowIcon />
+            Back to Opportunities
+          </button>
+
+          <div
+            style={{
+              border: "1px solid #e5e7eb",
+              borderRadius: 14,
+              padding: "22px",
+              background: "#fff",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            }}
+          >
+            <p style={{ margin: 0, color: "#b91c1c" }}>
+              {error || "Opportunity not found."}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -316,10 +451,7 @@ export default function ConnectForm() {
                   }}
                 >
                   <PeopleIcon />
-                  <span>
-                    Up to {opp.spotsTotal} volunteers, {opp.spotsRemaining} spots
-                    remaining
-                  </span>
+                  <span>{opp.organizationName}</span>
                 </div>
               </div>
 
