@@ -509,8 +509,6 @@ function YourOpportunitiesPage() {
                             Delete
                           </button>
                         </div>
-
-                        <small className="text-muted">Posted</small>
                       </div>
                     </div>
                   </div>

@@ -8,6 +8,73 @@ type RegisterOrganizationData = {
   password: string;
 };
 
+export type OrganizationProfile = {
+  org_id: string;
+  name: string;
+  description: string;
+  contact_name: string;
+  contact_email: string;
+  phone_number: string;
+  website_url: string;
+};
+
+export async function fetchOrganizationProfile(): Promise<OrganizationProfile | null> {
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError) throw userError;
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from("organizations")
+    .select("org_id, name, description, contact_name, contact_email, phone_number, website_url")
+    .eq("org_id", user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return data;
+}
+
+type UpdateOrganizationProfileInput = {
+  name: string;
+  description: string;
+  contact_name: string;
+  contact_email: string;
+  phone_number: string;
+  website_url: string;
+};
+
+export async function updateOrganizationProfile(updates: UpdateOrganizationProfileInput) {
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError) throw userError;
+  if (!user) throw new Error("User not logged in");
+
+  const { data, error } = await supabase
+    .from("organizations")
+    .update({
+      name: updates.name,
+      description: updates.description,
+      contact_name: updates.contact_name,
+      contact_email: updates.contact_email,
+      phone_number: updates.phone_number,
+      website_url: updates.website_url,
+    })
+    .eq("org_id", user.id)
+    .select()
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return data;
+}
+
 export async function registerOrganization(
   formData: RegisterOrganizationData
 ) {

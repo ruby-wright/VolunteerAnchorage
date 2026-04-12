@@ -116,6 +116,13 @@ function SignInDropdown() {
           <>
             <p className="mb-3">Signed in as {user.email}</p>
 
+            <Link
+              to="/organization-profile"
+              className="btn btn-outline-primary w-100 mb-2"
+            >
+              Edit Profile
+            </Link>
+
             <button
               type="button"
               className="btn btn-danger w-100"
