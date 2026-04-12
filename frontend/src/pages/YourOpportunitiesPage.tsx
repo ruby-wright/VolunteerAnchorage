@@ -1,12 +1,8 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
+import { useState, useRef, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabaseClient";
+import { fetchOpportunities, createOpportunity, deleteOpportunity, updateOpportunity } from "../api/opportunities";
+import DeleteModal from "../components/DeleteModal";
+import EditOpportunityModal from "../components/EditOpportunityModal";
 
 type Opportunity = {
   id: string;
@@ -19,6 +15,20 @@ type Opportunity = {
   endTime: string;
   ageRequirements: string;
   commitmentLevel: string;
+  photo_url: string;
+};
+
+type OpportunityRow = {
+  opportunity_id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  category: string;
+  start_time: string;
+  end_time: string;
+  age_requirements: string;
+  commitment_level: string;
   photo_url: string;
 };
 
@@ -41,58 +51,35 @@ function YourOpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editOpportunity, setEditOpportunity] = useState<Opportunity | null>(null);
 
   useEffect(() => {
-    const fetchOpportunities = async () => {
+    const load = async () => {
       try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
+        const data = await fetchOpportunities();
 
-        if (!user) return;
+        const formatted = data.map((item: OpportunityRow) => ({
+          id: item.opportunity_id,
+          title: item.title,
+          description: item.description,
+          date: item.date,
+          location: item.location,
+          category: item.category,
+          startTime: item.start_time,
+          endTime: item.end_time,
+          ageRequirements: item.age_requirements,
+          commitmentLevel: item.commitment_level,
+          photo_url: item.photo_url ?? "",
+        }));
 
-        const { data: organization, error: orgError } = await supabase
-          .from("organizations")
-          .select("org_id, organization_email, contact_email")
-          .or(
-            `organization_email.eq.${user.email},contact_email.eq.${user.email}`
-          )
-          .maybeSingle();
-
-        if (orgError) throw orgError;
-        if (!organization) return;
-
-        const { data, error } = await supabase
-          .from("volunteer_opportunities")
-          .select("*")
-          .eq("org_id", organization.org_id)
-          .order("created_at", { ascending: false });
-
-        if (error) throw error;
-
-        const formattedOpportunities: Opportunity[] = (data || []).map(
-          (item) => ({
-            id: item.opportunity_id,
-            title: item.title,
-            description: item.description,
-            date: item.date,
-            location: item.location,
-            category: item.category,
-            startTime: item.start_time,
-            endTime: item.end_time,
-            ageRequirements: item.age_requirements,
-            commitmentLevel: item.commitment_level,
-            photo_url: item.photo_url ?? "",
-          })
-        );
-
-        setOpportunities(formattedOpportunities);
-      } catch (error) {
-        console.error("Error fetching opportunities:", error);
+        setOpportunities(formatted);
+      } catch (err) {
+        console.error(err);
       }
     };
 
-    fetchOpportunities();
+    load();
   }, []);
 
   const handleChange = (
@@ -116,84 +103,20 @@ function YourOpportunitiesPage() {
     setIsSubmitting(true);
 
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+      const inserted = await createOpportunity(formData, photoFile);
 
-      if (userError) throw userError;
-      if (!user)
-        throw new Error("You must be logged in to create an opportunity.");
-
-      const { data: organization, error: orgError } = await supabase
-        .from("organizations")
-        .select("org_id, organization_email, contact_email")
-        .eq("organization_email", user.email)
-        .maybeSingle();
-
-      if (orgError) throw orgError;
-      if (!organization) {
-        throw new Error("No organization record found for this account.");
-      }
-
-      let photoUrl = "";
-
-      if (photoFile) {
-        const fileExt = photoFile.name.split(".").pop();
-        const fileName = `${Date.now()}-${Math.random()
-          .toString(36)
-          .slice(2)}.${fileExt}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("opportunity-images")
-          .upload(fileName, photoFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = supabase.storage
-          .from("opportunity-images")
-          .getPublicUrl(fileName);
-
-        photoUrl = publicUrlData.publicUrl;
-      }
-
-      const { data: insertedOpportunity, error: insertError } = await supabase
-        .from("volunteer_opportunities")
-        .insert([
-          {
-            org_id: organization.org_id,
-            title: formData.title,
-            description: formData.description,
-            date: formData.date,
-            location: formData.location,
-            category: formData.category,
-            start_time: formData.startTime,
-            end_time: formData.endTime,
-            age_requirements: formData.ageRequirements,
-            commitment_level: formData.commitmentLevel,
-            photo_url: photoUrl,
-          },
-        ])
-        .select()
-        .maybeSingle();
-
-      if (insertError) throw insertError;
-      if (!insertedOpportunity) {
-        throw new Error("Opportunity was not returned after insert.");
-      }
-
-      const newOpportunity: Opportunity = {
-        id: insertedOpportunity.opportunity_id,
-        title: insertedOpportunity.title,
-        description: insertedOpportunity.description,
-        date: insertedOpportunity.date,
-        location: insertedOpportunity.location,
-        category: insertedOpportunity.category,
-        startTime: insertedOpportunity.start_time,
-        endTime: insertedOpportunity.end_time,
-        ageRequirements: insertedOpportunity.age_requirements,
-        commitmentLevel: insertedOpportunity.commitment_level,
-        photo_url: insertedOpportunity.photo_url ?? "",
+      const newOpportunity = {
+        id: inserted.opportunity_id,
+        title: inserted.title,
+        description: inserted.description,
+        date: inserted.date,
+        location: inserted.location,
+        category: inserted.category,
+        startTime: inserted.start_time,
+        endTime: inserted.end_time,
+        ageRequirements: inserted.age_requirements,
+        commitmentLevel: inserted.commitment_level,
+        photo_url: inserted.photo_url ?? "",
       };
 
       setOpportunities((prev) => [newOpportunity, ...prev]);
@@ -211,29 +134,53 @@ function YourOpportunitiesPage() {
       });
 
       setPhotoFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      if (fileInputRef.current) fileInputRef.current.value = "";
 
-      alert("Opportunity created successfully.");
-    } catch (error: unknown) {
-      console.error("Error creating opportunity:", error);
-
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("Could not create opportunity.");
-      }
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDelete = (id: string) => {
-    setOpportunities((prev) =>
-      prev.filter((opportunity) => opportunity.id !== id)
-    );
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure?")) return;
+
+    try {
+      await deleteOpportunity(id);
+
+      setOpportunities((prev) =>
+        prev.filter((opportunity) => opportunity.id !== id)
+      );
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  const handleUpdate = async (updatedOpportunity: Opportunity) => {
+  try {
+    await updateOpportunity(updatedOpportunity.id, {
+      title: updatedOpportunity.title,
+      description: updatedOpportunity.description,
+      date: updatedOpportunity.date,
+      location: updatedOpportunity.location,
+      category: updatedOpportunity.category,
+      start_time: updatedOpportunity.startTime,
+      end_time: updatedOpportunity.endTime,
+      age_requirements: updatedOpportunity.ageRequirements,
+      commitment_level: updatedOpportunity.commitmentLevel,
+    });
+
+    setOpportunities((prev) =>
+      prev.map((opp) =>
+        opp.id === updatedOpportunity.id ? updatedOpportunity : opp
+      )
+    );
+  } catch (error) {
+    console.error("Error updating opportunity:", error);
+    alert("Failed to update opportunity.");
+  }
+};
 
   return (
     <main role="main" style={{ background: "#f8fafc", minHeight: "100vh" }}>
@@ -547,18 +494,17 @@ function YourOpportunitiesPage() {
                           >
                             View Details
                           </button>
-
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-secondary"
+                            onClick={() => setEditOpportunity(opportunity)}
                           >
                             Edit
                           </button>
-
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleDelete(opportunity.id)}
+                            onClick={() => setDeleteId(opportunity.id)}
                           >
                             Delete
                           </button>
@@ -595,6 +541,25 @@ function YourOpportunitiesPage() {
           </div>
         </div>
       </div>
+      {deleteId && (
+        <DeleteModal
+          onCancel={() => setDeleteId(null)}
+          onConfirm={async () => {
+            await handleDelete(deleteId);
+            setDeleteId(null);
+          }}
+        />
+      )}
+      {editOpportunity && (
+        <EditOpportunityModal
+          opportunity={editOpportunity}
+          onCancel={() => setEditOpportunity(null)}
+          onSave={async (updatedOpportunity) => {
+            await handleUpdate(updatedOpportunity);
+            setEditOpportunity(null);
+          }}
+        />
+      )}
     </main>
   );
 }
