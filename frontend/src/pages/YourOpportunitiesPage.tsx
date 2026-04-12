@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, type ChangeEvent, type FormEvent } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 
 type Opportunity = {
@@ -16,6 +23,8 @@ type Opportunity = {
 };
 
 function YourOpportunitiesPage() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -45,7 +54,9 @@ function YourOpportunitiesPage() {
         const { data: organization, error: orgError } = await supabase
           .from("organizations")
           .select("org_id, organization_email, contact_email")
-          .or(`organization_email.eq.${user.email},contact_email.eq.${user.email}`)
+          .or(
+            `organization_email.eq.${user.email},contact_email.eq.${user.email}`
+          )
           .maybeSingle();
 
         if (orgError) throw orgError;
@@ -59,19 +70,21 @@ function YourOpportunitiesPage() {
 
         if (error) throw error;
 
-        const formattedOpportunities: Opportunity[] = (data || []).map((item) => ({
-          id: item.opportunity_id,
-          title: item.title,
-          description: item.description,
-          date: item.date,
-          location: item.location,
-          category: item.category,
-          startTime: item.start_time,
-          endTime: item.end_time,
-          ageRequirements: item.age_requirements,
-          commitmentLevel: item.commitment_level,
-          photo_url: item.photo_url ?? "",
-        }));
+        const formattedOpportunities: Opportunity[] = (data || []).map(
+          (item) => ({
+            id: item.opportunity_id,
+            title: item.title,
+            description: item.description,
+            date: item.date,
+            location: item.location,
+            category: item.category,
+            startTime: item.start_time,
+            endTime: item.end_time,
+            ageRequirements: item.age_requirements,
+            commitmentLevel: item.commitment_level,
+            photo_url: item.photo_url ?? "",
+          })
+        );
 
         setOpportunities(formattedOpportunities);
       } catch (error) {
@@ -109,7 +122,8 @@ function YourOpportunitiesPage() {
       } = await supabase.auth.getUser();
 
       if (userError) throw userError;
-      if (!user) throw new Error("You must be logged in to create an opportunity.");
+      if (!user)
+        throw new Error("You must be logged in to create an opportunity.");
 
       const { data: organization, error: orgError } = await supabase
         .from("organizations")
@@ -222,28 +236,57 @@ function YourOpportunitiesPage() {
   };
 
   return (
-    <main role="main">
-      <section className="jumbotron text-center">
+    <main role="main" style={{ background: "#f8fafc", minHeight: "100vh" }}>
+      <section
+        className="text-center"
+        style={{
+          padding: "60px 20px 40px 20px",
+          background: "linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%)",
+          borderBottom: "1px solid #e5e7eb",
+        }}
+      >
         <div className="container">
-          <h1 className="jumbotron-heading">Manage Your Opportunities</h1>
-          <p className="lead text-muted">
-            Create volunteer events for your organization and manage existing
-            opportunities.
+          <h1
+            className="fw-bold"
+            style={{ fontSize: "2.4rem", color: "#111827", marginBottom: 12 }}
+          >
+            Manage Your Opportunities
+          </h1>
+          <p
+            className="lead"
+            style={{ color: "#6b7280", maxWidth: 720, margin: "0 auto" }}
+          >
+            Create volunteer events for your organization and manage your
+            existing opportunities in one place.
           </p>
         </div>
       </section>
 
-      <div className="album py-5 bg-light">
+      <div className="py-5" style={{ background: "#f8fafc" }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto">
-              <div className="card mb-5 box-shadow">
-                <div className="card-body">
-                  <h4 className="card-title mb-4">Create a New Opportunity</h4>
+              <div
+                className="card mb-5"
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 16,
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                }}
+              >
+                <div className="card-body p-4 p-md-5">
+                  <h4
+                    className="card-title mb-4 fw-bold"
+                    style={{ color: "#111827" }}
+                  >
+                    Create a New Opportunity
+                  </h4>
 
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                      <label className="form-label">Opportunity Title</label>
+                      <label className="form-label fw-semibold">
+                        Opportunity Title
+                      </label>
                       <input
                         type="text"
                         name="title"
@@ -255,7 +298,9 @@ function YourOpportunitiesPage() {
                     </div>
 
                     <div className="mb-3">
-                      <label className="form-label">Description</label>
+                      <label className="form-label fw-semibold">
+                        Description
+                      </label>
                       <textarea
                         name="description"
                         className="form-control"
@@ -268,7 +313,7 @@ function YourOpportunitiesPage() {
 
                     <div className="row">
                       <div className="col-md-6 mb-3">
-                        <label className="form-label">Date</label>
+                        <label className="form-label fw-semibold">Date</label>
                         <input
                           type="date"
                           name="date"
@@ -280,7 +325,9 @@ function YourOpportunitiesPage() {
                       </div>
 
                       <div className="col-md-6 mb-3">
-                        <label className="form-label">Location</label>
+                        <label className="form-label fw-semibold">
+                          Location
+                        </label>
                         <input
                           type="text"
                           name="location"
@@ -294,7 +341,9 @@ function YourOpportunitiesPage() {
 
                     <div className="row">
                       <div className="col-md-6 mb-3">
-                        <label className="form-label">Start Time</label>
+                        <label className="form-label fw-semibold">
+                          Start Time
+                        </label>
                         <input
                           type="time"
                           name="startTime"
@@ -306,7 +355,9 @@ function YourOpportunitiesPage() {
                       </div>
 
                       <div className="col-md-6 mb-3">
-                        <label className="form-label">End Time</label>
+                        <label className="form-label fw-semibold">
+                          End Time
+                        </label>
                         <input
                           type="time"
                           name="endTime"
@@ -319,7 +370,7 @@ function YourOpportunitiesPage() {
                     </div>
 
                     <div className="mb-3">
-                      <label className="form-label">Category</label>
+                      <label className="form-label fw-semibold">Category</label>
                       <select
                         name="category"
                         className="form-select"
@@ -328,7 +379,9 @@ function YourOpportunitiesPage() {
                         required
                       >
                         <option value="">Select a category</option>
-                        <option value="Community Service">Community Service</option>
+                        <option value="Community Service">
+                          Community Service
+                        </option>
                         <option value="Environment">Environment</option>
                         <option value="Food Support">Food Support</option>
                         <option value="Youth">Youth</option>
@@ -338,7 +391,9 @@ function YourOpportunitiesPage() {
                     </div>
 
                     <div className="mb-3">
-                      <label className="form-label">Age Requirements</label>
+                      <label className="form-label fw-semibold">
+                        Age Requirements
+                      </label>
                       <input
                         type="text"
                         name="ageRequirements"
@@ -351,7 +406,9 @@ function YourOpportunitiesPage() {
                     </div>
 
                     <div className="mb-3">
-                      <label className="form-label">Commitment Level</label>
+                      <label className="form-label fw-semibold">
+                        Commitment Level
+                      </label>
                       <select
                         name="commitmentLevel"
                         className="form-select"
@@ -367,8 +424,10 @@ function YourOpportunitiesPage() {
                       </select>
                     </div>
 
-                    <div className="mb-3">
-                      <label className="form-label">Upload Photo</label>
+                    <div className="mb-4">
+                      <label className="form-label fw-semibold">
+                        Upload Photo
+                      </label>
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -380,8 +439,16 @@ function YourOpportunitiesPage() {
 
                     <button
                       type="submit"
-                      className="btn btn-primary"
+                      className="btn"
                       disabled={isSubmitting}
+                      style={{
+                        background: "#2563eb",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 10,
+                        padding: "12px 20px",
+                        fontWeight: 700,
+                      }}
                     >
                       {isSubmitting ? "Creating..." : "Create Opportunity"}
                     </button>
@@ -391,13 +458,28 @@ function YourOpportunitiesPage() {
             </div>
           </div>
 
-          <h4 className="mb-4">Your Posted Opportunities</h4>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h4 className="mb-0 fw-bold" style={{ color: "#111827" }}>
+              Your Posted Opportunities
+            </h4>
+            <span style={{ color: "#6b7280", fontSize: "0.95rem" }}>
+              {opportunities.length} posted
+            </span>
+          </div>
 
           <div className="row">
             {opportunities.length > 0 ? (
               opportunities.map((opportunity) => (
-                <div className="col-md-4" key={opportunity.id}>
-                  <div className="card mb-4 box-shadow h-100">
+                <div className="col-md-6 col-lg-4 mb-4" key={opportunity.id}>
+                  <div
+                    className="card h-100"
+                    style={{
+                      border: "1px solid #e5e7eb",
+                      borderRadius: 16,
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                      overflow: "hidden",
+                    }}
+                  >
                     <img
                       className="card-img-top"
                       src={
@@ -407,9 +489,35 @@ function YourOpportunitiesPage() {
                       alt={opportunity.title}
                       style={{ height: "225px", objectFit: "cover" }}
                     />
-                    <div className="card-body d-flex flex-column">
-                      <h5 className="card-title">{opportunity.title}</h5>
-                      <p className="card-text">{opportunity.description}</p>
+
+                    <div className="card-body d-flex flex-column p-4">
+                      <div
+                        style={{
+                          display: "inline-block",
+                          alignSelf: "flex-start",
+                          background: "#eff6ff",
+                          color: "#2563eb",
+                          borderRadius: 999,
+                          padding: "4px 10px",
+                          fontSize: "0.8rem",
+                          fontWeight: 700,
+                          marginBottom: 12,
+                        }}
+                      >
+                        {opportunity.category}
+                      </div>
+
+                      <h5
+                        className="card-title fw-bold"
+                        style={{ color: "#111827" }}
+                      >
+                        {opportunity.title}
+                      </h5>
+
+                      <p className="card-text" style={{ color: "#4b5563" }}>
+                        {opportunity.description}
+                      </p>
+
                       <p className="card-text mb-1">
                         <strong>Date:</strong> {opportunity.date}
                       </p>
@@ -421,23 +529,32 @@ function YourOpportunitiesPage() {
                         <strong>Location:</strong> {opportunity.location}
                       </p>
                       <p className="card-text mb-1">
-                        <strong>Category:</strong> {opportunity.category}
-                      </p>
-                      <p className="card-text mb-1">
                         <strong>Age:</strong> {opportunity.ageRequirements}
                       </p>
                       <p className="card-text mb-3">
-                        <strong>Commitment:</strong> {opportunity.commitmentLevel}
+                        <strong>Commitment:</strong>{" "}
+                        {opportunity.commitmentLevel}
                       </p>
 
                       <div className="d-flex justify-content-between align-items-center mt-auto">
                         <div className="btn-group">
                           <button
                             type="button"
+                            className="btn btn-sm btn-outline-primary"
+                            onClick={() =>
+                              navigate(`/connect/${opportunity.id}`)
+                            }
+                          >
+                            View Details
+                          </button>
+
+                          <button
+                            type="button"
                             className="btn btn-sm btn-outline-secondary"
                           >
                             Edit
                           </button>
+
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-danger"
@@ -446,7 +563,8 @@ function YourOpportunitiesPage() {
                             Delete
                           </button>
                         </div>
-                        <small className="text-muted">Posted just now</small>
+
+                        <small className="text-muted">Posted</small>
                       </div>
                     </div>
                   </div>
@@ -454,10 +572,21 @@ function YourOpportunitiesPage() {
               ))
             ) : (
               <div className="col-12">
-                <div className="card box-shadow">
-                  <div className="card-body text-center">
-                    <p className="card-text mb-0">
-                      You have not created any opportunities yet.
+                <div
+                  className="card"
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: 16,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+                  }}
+                >
+                  <div className="card-body text-center py-5">
+                    <h5 className="fw-bold mb-2" style={{ color: "#111827" }}>
+                      No opportunities yet
+                    </h5>
+                    <p className="card-text mb-0" style={{ color: "#6b7280" }}>
+                      Create your first volunteer opportunity using the form
+                      above.
                     </p>
                   </div>
                 </div>
