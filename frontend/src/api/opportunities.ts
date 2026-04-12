@@ -107,3 +107,28 @@ export async function deleteOpportunity(id: string) {
 
   if (error) throw error;
 }
+
+export async function updateOpportunity(
+  id: string,
+  updates: {
+    title: string;
+    description: string;
+    date: string;
+    location: string;
+    category: string;
+    start_time: string;
+    end_time: string;
+    age_requirements: string;
+    commitment_level: string;
+  }
+) {
+  const { data, error } = await supabase
+    .from("volunteer_opportunities")
+    .update(updates)
+    .eq("opportunity_id", id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}

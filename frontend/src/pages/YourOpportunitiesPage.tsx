@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchOpportunities, createOpportunity, deleteOpportunity } from "../api/opportunities";
+import { fetchOpportunities, createOpportunity, deleteOpportunity, updateOpportunity } from "../api/opportunities";
 import DeleteModal from "../components/DeleteModal";
+import EditOpportunityModal from "../components/EditOpportunityModal";
 
 type Opportunity = {
   id: string;
@@ -51,6 +52,7 @@ function YourOpportunitiesPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editOpportunity, setEditOpportunity] = useState<Opportunity | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -154,6 +156,31 @@ function YourOpportunitiesPage() {
       console.error(err);
     }
   };
+
+  const handleUpdate = async (updatedOpportunity: Opportunity) => {
+  try {
+    await updateOpportunity(updatedOpportunity.id, {
+      title: updatedOpportunity.title,
+      description: updatedOpportunity.description,
+      date: updatedOpportunity.date,
+      location: updatedOpportunity.location,
+      category: updatedOpportunity.category,
+      start_time: updatedOpportunity.startTime,
+      end_time: updatedOpportunity.endTime,
+      age_requirements: updatedOpportunity.ageRequirements,
+      commitment_level: updatedOpportunity.commitmentLevel,
+    });
+
+    setOpportunities((prev) =>
+      prev.map((opp) =>
+        opp.id === updatedOpportunity.id ? updatedOpportunity : opp
+      )
+    );
+  } catch (error) {
+    console.error("Error updating opportunity:", error);
+    alert("Failed to update opportunity.");
+  }
+};
 
   return (
     <main role="main" style={{ background: "#f8fafc", minHeight: "100vh" }}>
@@ -467,10 +494,10 @@ function YourOpportunitiesPage() {
                           >
                             View Details
                           </button>
-
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-secondary"
+                            onClick={() => setEditOpportunity(opportunity)}
                           >
                             Edit
                           </button>
@@ -520,6 +547,16 @@ function YourOpportunitiesPage() {
           onConfirm={async () => {
             await handleDelete(deleteId);
             setDeleteId(null);
+          }}
+        />
+      )}
+      {editOpportunity && (
+        <EditOpportunityModal
+          opportunity={editOpportunity}
+          onCancel={() => setEditOpportunity(null)}
+          onSave={async (updatedOpportunity) => {
+            await handleUpdate(updatedOpportunity);
+            setEditOpportunity(null);
           }}
         />
       )}
