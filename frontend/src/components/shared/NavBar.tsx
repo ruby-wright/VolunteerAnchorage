@@ -125,8 +125,7 @@ function NavBar() {
               </li>
             )}
           </ul>
-
-          {/* Right Side */}
+          
           <SignInDropdown />
         </div>
       </div>
