@@ -180,7 +180,14 @@ function YourOpportunitiesPage() {
     console.error("Error updating opportunity:", error);
     alert("Failed to update opportunity.");
   }
-};
+  };
+
+  function formatTime(time: string) {
+    return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+  });
+  }
 
   return (
     <main role="main" style={{ background: "#f8fafc", minHeight: "100vh" }}>
@@ -469,8 +476,7 @@ function YourOpportunitiesPage() {
                         <strong>Date:</strong> {opportunity.date}
                       </p>
                       <p className="card-text mb-1">
-                        <strong>Time:</strong> {opportunity.startTime} -{" "}
-                        {opportunity.endTime}
+                        <strong>Time:</strong> {formatTime(opportunity.startTime)} - {formatTime(opportunity.endTime)}
                       </p>
                       <p className="card-text mb-1">
                         <strong>Location:</strong> {opportunity.location}

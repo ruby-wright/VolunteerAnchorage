@@ -21,6 +21,13 @@ function OpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
 
+  function formatTime(time: string) {
+  return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  }
+
   useEffect(() => {
     const fetchOpportunities = async () => {
       try {
@@ -143,8 +150,7 @@ function OpportunitiesPage() {
                         <strong>Date:</strong> {opportunity.date}
                       </p>
                       <p className="card-text mb-1">
-                        <strong>Time:</strong> {opportunity.startTime} -{" "}
-                        {opportunity.endTime}
+                        <strong>Time:</strong> {formatTime(opportunity.startTime)} - {formatTime(opportunity.endTime)}
                       </p>
                       <p className="card-text mb-1">
                         <strong>Location:</strong> {opportunity.location}
