@@ -11,6 +11,7 @@ type Opportunity = {
   endTime: string;
   ageRequirements: string;
   commitmentLevel: string;
+  capacity: string;
   photo_url: string;
 };
 
@@ -189,6 +190,18 @@ function EditOpportunityModal({ opportunity, onCancel, onSave }: Props) {
               <option value="Long-term">Long-term</option>
               <option value="Flexible">Flexible</option>
             </select>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-semibold">Capacity</label>
+            <input
+              type="text"
+              name="capacity"
+              className="form-control"
+              value={formData.capacity}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="d-flex justify-content-end gap-2">

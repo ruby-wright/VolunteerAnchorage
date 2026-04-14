@@ -13,6 +13,7 @@ type Opportunity = {
   endTime: string;
   ageRequirements: string;
   commitmentLevel: string;
+  capacity: string;
   photo_url: string;
 };
 
@@ -50,6 +51,7 @@ function OpportunitiesPage() {
             endTime: item.end_time,
             ageRequirements: item.age_requirements,
             commitmentLevel: item.commitment_level,
+            capacity: item.capacity,
             photo_url: item.photo_url ?? "",
           })
         );
@@ -157,6 +159,10 @@ function OpportunitiesPage() {
                       </p>
                       <p className="card-text mb-1">
                         <strong>Age:</strong> {opportunity.ageRequirements}
+                      </p>
+                      <p className="card-text mb-1">
+                        <strong>Capacity:</strong>{" "}
+                        {opportunity.capacity}
                       </p>
                       <p className="card-text mb-3">
                         <strong>Commitment:</strong>{" "}
