@@ -85,6 +85,7 @@ function BackArrowIcon() {
 
 export default function ConnectForm() {
   const navigate = useNavigate();
+  
   const { opportunityId } = useParams<{ opportunityId: string }>();
 
   const [form, setForm] = useState<FormData>({
@@ -100,6 +101,13 @@ export default function ConnectForm() {
   const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState("");
   const [opp, setOpp] = useState<OpportunityDetails | null>(null);
+  
+  function formatTime(time: string) {
+    return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
 
   useEffect(() => {
     const fetchOpportunity = async () => {
@@ -140,7 +148,7 @@ export default function ConnectForm() {
             ? `Age requirement: ${data.age_requirements}`
             : "Age requirement not specified",
           data.start_time && data.end_time
-            ? `Time: ${data.start_time} - ${data.end_time}`
+            ? `Time: ${formatTime(data.start_time)} - ${formatTime(data.end_time)}`
             : "Time will be shared by the organization",
         ];
 
