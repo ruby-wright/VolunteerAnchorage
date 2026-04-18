@@ -7,6 +7,7 @@ import Footer from "./components/shared/Footer";
 import ConnectForm from "./pages/ConnectForm";
 import OpportunitiesPage from "./pages/OpportunitiesPage";
 import OrganizationProfilePage from "./pages/OrganizationProfilePage";
+import YourVolunteersPage from "./pages/YourVolunteersPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/connect" element={<ConnectForm />} />
         <Route path="/connect/:opportunityId" element={<ConnectForm />} />
         <Route path="/organization-profile" element={<OrganizationProfilePage />} />
+        <Route path="/your-volunteers" element={<YourVolunteersPage />} />
       </Routes>
 
       <Footer />
