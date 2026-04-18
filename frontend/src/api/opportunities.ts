@@ -10,6 +10,7 @@ type OpportunityFormData = {
   endTime: string;
   ageRequirements: string;
   commitmentLevel: string;
+  capacity: string;
 };
 
 export async function fetchOpportunities() {
@@ -88,6 +89,7 @@ export async function createOpportunity(formData: OpportunityFormData, photoFile
         end_time: formData.endTime,
         age_requirements: formData.ageRequirements,
         commitment_level: formData.commitmentLevel,
+        capacity: formData.capacity,
         photo_url: photoUrl,
       },
     ])
@@ -120,6 +122,7 @@ export async function updateOpportunity(
     end_time: string;
     age_requirements: string;
     commitment_level: string;
+    capacity: string;
   }
 ) {
   const { data, error } = await supabase

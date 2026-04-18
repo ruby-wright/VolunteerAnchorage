@@ -16,6 +16,7 @@ type Opportunity = {
   ageRequirements: string;
   commitmentLevel: string;
   photo_url: string;
+  capacity: string;
 };
 
 type OpportunityRow = {
@@ -30,6 +31,7 @@ type OpportunityRow = {
   age_requirements: string;
   commitment_level: string;
   photo_url: string;
+  capacity: string;
 };
 
 function YourOpportunitiesPage() {
@@ -45,6 +47,7 @@ function YourOpportunitiesPage() {
     endTime: "",
     ageRequirements: "",
     commitmentLevel: "",
+    capacity: "",
   });
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -70,6 +73,7 @@ function YourOpportunitiesPage() {
           endTime: item.end_time,
           ageRequirements: item.age_requirements,
           commitmentLevel: item.commitment_level,
+          capacity: item.capacity,
           photo_url: item.photo_url ?? "",
         }));
 
@@ -116,6 +120,7 @@ function YourOpportunitiesPage() {
         endTime: inserted.end_time,
         ageRequirements: inserted.age_requirements,
         commitmentLevel: inserted.commitment_level,
+        capacity: inserted.capacity,
         photo_url: inserted.photo_url ?? "",
       };
 
@@ -131,6 +136,7 @@ function YourOpportunitiesPage() {
         endTime: "",
         ageRequirements: "",
         commitmentLevel: "",
+        capacity: "",
       });
 
       setPhotoFile(null);
@@ -383,6 +389,21 @@ function YourOpportunitiesPage() {
                       </select>
                     </div>
 
+                    <div className="mb-3">
+                      <label className="form-label fw-semibold">
+                        Capacity (Max Volunteers)
+                      </label>
+                      <input
+                        type="number"
+                        name="capacity"
+                        className="form-control"
+                        placeholder="e.g. 25"
+                        value={formData.capacity}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+
                     <div className="mb-4">
                       <label className="form-label fw-semibold">
                         Upload Photo
@@ -481,8 +502,7 @@ function YourOpportunitiesPage() {
                         <strong>Date:</strong> {opportunity.date}
                       </p>
                       <p className="card-text mb-1">
-                        <strong>Time:</strong> {opportunity.startTime} -{" "}
-                        {opportunity.endTime}
+                        <strong>Time:</strong> {formatTime(opportunity.startTime)} - {formatTime(opportunity.endTime)}
                       </p>
                       <p className="card-text mb-1">
                         <strong>Location:</strong> {opportunity.location}
@@ -490,9 +510,13 @@ function YourOpportunitiesPage() {
                       <p className="card-text mb-1">
                         <strong>Age:</strong> {opportunity.ageRequirements}
                       </p>
-                      <p className="card-text mb-3">
+                      <p className="card-text mb-1">
                         <strong>Commitment:</strong>{" "}
                         {opportunity.commitmentLevel}
+                      </p>
+                      <p className="card-text mb-3">
+                        <strong>Capacity:</strong>{" "}
+                        {opportunity.capacity}
                       </p>
 
                       <div className="d-flex justify-content-between align-items-center mt-auto">
