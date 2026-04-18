@@ -108,7 +108,7 @@ function HomePage() {
                 marginBottom: "10px",
               }}
             >
-              Why Volunteer Anchorage
+              Why VolunteerAnchorage
             </h2>
             <p
               style={{
