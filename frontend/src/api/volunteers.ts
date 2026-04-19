@@ -19,17 +19,5 @@ export async function registerVolunteer(payload: VolunteerSignupPayload) {
     throw new Error(insertError.message);
   }
 
-  // Call the edge function to send the email
-  const { error: functionError } = await supabase.functions.invoke(
-    "send-volunteer-email",
-    {
-      body: payload,
-    }
-  );
-
-  if (functionError) {
-    throw new Error(functionError.message);
-  }
-
   return { success: true };
 }
