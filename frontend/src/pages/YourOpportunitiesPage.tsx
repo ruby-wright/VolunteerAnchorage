@@ -34,6 +34,13 @@ type OpportunityRow = {
   capacity: string;
 };
 
+function formatTime(time: string) {
+  return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 function YourOpportunitiesPage() {
   const navigate = useNavigate();
 
@@ -174,6 +181,7 @@ function YourOpportunitiesPage() {
         end_time: updatedOpportunity.endTime,
         age_requirements: updatedOpportunity.ageRequirements,
         commitment_level: updatedOpportunity.commitmentLevel,
+        capacity: updatedOpportunity.capacity,
       });
 
       setOpportunities((prev) =>
