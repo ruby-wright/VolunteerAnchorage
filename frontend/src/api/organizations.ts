@@ -11,7 +11,6 @@ type RegisterOrganizationData = {
 export type OrganizationProfile = {
   org_id: string;
   name: string;
-  description: string;
   contact_name: string;
   contact_email: string;
   phone_number: string;
@@ -29,7 +28,7 @@ export async function fetchOrganizationProfile(): Promise<OrganizationProfile | 
 
   const { data, error } = await supabase
     .from("organizations")
-    .select("org_id, name, description, contact_name, contact_email, phone_number, website_url")
+    .select("org_id, name, contact_name, contact_email, phone_number, website_url")
     .eq("org_id", user.id)
     .maybeSingle();
 
@@ -40,7 +39,6 @@ export async function fetchOrganizationProfile(): Promise<OrganizationProfile | 
 
 type UpdateOrganizationProfileInput = {
   name: string;
-  description: string;
   contact_name: string;
   contact_email: string;
   phone_number: string;
@@ -60,7 +58,6 @@ export async function updateOrganizationProfile(updates: UpdateOrganizationProfi
     .from("organizations")
     .update({
       name: updates.name,
-      description: updates.description,
       contact_name: updates.contact_name,
       contact_email: updates.contact_email,
       phone_number: updates.phone_number,
