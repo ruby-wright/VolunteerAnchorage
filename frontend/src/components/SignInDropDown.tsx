@@ -104,6 +104,7 @@ function SignInDropdown() {
         data-bs-toggle="dropdown"
         data-bs-auto-close="true"
         disabled={loading}
+        style={{ backgroundColor: "#2563eb", borderColor: "#2563eb" }}
       >
         {user ? "Account" : "Sign In"}
       </button>
