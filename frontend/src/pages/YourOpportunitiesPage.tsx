@@ -16,6 +16,7 @@ type Opportunity = {
   ageRequirements: string;
   commitmentLevel: string;
   photo_url: string;
+  capacity: string;
 };
 
 type OpportunityRow = {
@@ -30,7 +31,15 @@ type OpportunityRow = {
   age_requirements: string;
   commitment_level: string;
   photo_url: string;
+  capacity: string;
 };
+
+function formatTime(time: string) {
+  return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
 
 function YourOpportunitiesPage() {
   const navigate = useNavigate();
@@ -45,6 +54,7 @@ function YourOpportunitiesPage() {
     endTime: "",
     ageRequirements: "",
     commitmentLevel: "",
+    capacity: "",
   });
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -70,6 +80,7 @@ function YourOpportunitiesPage() {
           endTime: item.end_time,
           ageRequirements: item.age_requirements,
           commitmentLevel: item.commitment_level,
+          capacity: item.capacity,
           photo_url: item.photo_url ?? "",
         }));
 
@@ -116,6 +127,7 @@ function YourOpportunitiesPage() {
         endTime: inserted.end_time,
         ageRequirements: inserted.age_requirements,
         commitmentLevel: inserted.commitment_level,
+        capacity: inserted.capacity,
         photo_url: inserted.photo_url ?? "",
       };
 
@@ -131,11 +143,11 @@ function YourOpportunitiesPage() {
         endTime: "",
         ageRequirements: "",
         commitmentLevel: "",
+        capacity: "",
       });
 
       setPhotoFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
-
     } catch (err) {
       console.error(err);
     } finally {
@@ -158,29 +170,34 @@ function YourOpportunitiesPage() {
   };
 
   const handleUpdate = async (updatedOpportunity: Opportunity) => {
-  try {
-    await updateOpportunity(updatedOpportunity.id, {
-      title: updatedOpportunity.title,
-      description: updatedOpportunity.description,
-      date: updatedOpportunity.date,
-      location: updatedOpportunity.location,
-      category: updatedOpportunity.category,
-      start_time: updatedOpportunity.startTime,
-      end_time: updatedOpportunity.endTime,
-      age_requirements: updatedOpportunity.ageRequirements,
-      commitment_level: updatedOpportunity.commitmentLevel,
-    });
+    try {
+      await updateOpportunity(updatedOpportunity.id, {
+        title: updatedOpportunity.title,
+        description: updatedOpportunity.description,
+        date: updatedOpportunity.date,
+        location: updatedOpportunity.location,
+        category: updatedOpportunity.category,
+        start_time: updatedOpportunity.startTime,
+        end_time: updatedOpportunity.endTime,
+        age_requirements: updatedOpportunity.ageRequirements,
+        commitment_level: updatedOpportunity.commitmentLevel,
+        capacity: updatedOpportunity.capacity,
+      });
 
-    setOpportunities((prev) =>
-      prev.map((opp) =>
-        opp.id === updatedOpportunity.id ? updatedOpportunity : opp
-      )
-    );
-  } catch (error) {
-    console.error("Error updating opportunity:", error);
-    alert("Failed to update opportunity.");
-  }
-};
+      setOpportunities((prev) =>
+        prev.map((opp) =>
+          opp.id === updatedOpportunity.id ? updatedOpportunity : opp
+        )
+      );
+    } catch (error) {
+      console.error("Error updating opportunity:", error);
+      alert("Failed to update opportunity.");
+    }
+  };
+
+  const whiteInputStyle = {
+    backgroundColor: "#ffffff",
+  };
 
   return (
     <main role="main" style={{ background: "#f8fafc", minHeight: "100vh" }}>
@@ -238,6 +255,7 @@ function YourOpportunitiesPage() {
                         type="text"
                         name="title"
                         className="form-control"
+                        style={whiteInputStyle}
                         value={formData.title}
                         onChange={handleChange}
                         required
@@ -251,6 +269,7 @@ function YourOpportunitiesPage() {
                       <textarea
                         name="description"
                         className="form-control"
+                        style={whiteInputStyle}
                         rows={4}
                         value={formData.description}
                         onChange={handleChange}
@@ -265,6 +284,7 @@ function YourOpportunitiesPage() {
                           type="date"
                           name="date"
                           className="form-control"
+                          style={whiteInputStyle}
                           value={formData.date}
                           onChange={handleChange}
                           required
@@ -279,6 +299,7 @@ function YourOpportunitiesPage() {
                           type="text"
                           name="location"
                           className="form-control"
+                          style={whiteInputStyle}
                           value={formData.location}
                           onChange={handleChange}
                           required
@@ -295,6 +316,7 @@ function YourOpportunitiesPage() {
                           type="time"
                           name="startTime"
                           className="form-control"
+                          style={whiteInputStyle}
                           value={formData.startTime}
                           onChange={handleChange}
                           required
@@ -309,6 +331,7 @@ function YourOpportunitiesPage() {
                           type="time"
                           name="endTime"
                           className="form-control"
+                          style={whiteInputStyle}
                           value={formData.endTime}
                           onChange={handleChange}
                           required
@@ -321,6 +344,7 @@ function YourOpportunitiesPage() {
                       <select
                         name="category"
                         className="form-select"
+                        style={whiteInputStyle}
                         value={formData.category}
                         onChange={handleChange}
                         required
@@ -345,6 +369,7 @@ function YourOpportunitiesPage() {
                         type="text"
                         name="ageRequirements"
                         className="form-control"
+                        style={whiteInputStyle}
                         placeholder="e.g. 18+ or All Ages"
                         value={formData.ageRequirements}
                         onChange={handleChange}
@@ -359,6 +384,7 @@ function YourOpportunitiesPage() {
                       <select
                         name="commitmentLevel"
                         className="form-select"
+                        style={whiteInputStyle}
                         value={formData.commitmentLevel}
                         onChange={handleChange}
                         required
@@ -371,6 +397,21 @@ function YourOpportunitiesPage() {
                       </select>
                     </div>
 
+                    <div className="mb-3">
+                      <label className="form-label fw-semibold">
+                        Capacity (Max Volunteers)
+                      </label>
+                      <input
+                        type="number"
+                        name="capacity"
+                        className="form-control"
+                        placeholder="e.g. 25"
+                        value={formData.capacity}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+
                     <div className="mb-4">
                       <label className="form-label fw-semibold">
                         Upload Photo
@@ -380,6 +421,7 @@ function YourOpportunitiesPage() {
                         type="file"
                         accept="image/*"
                         className="form-control"
+                        style={whiteInputStyle}
                         onChange={handlePhotoChange}
                       />
                     </div>
@@ -427,15 +469,14 @@ function YourOpportunitiesPage() {
                       overflow: "hidden",
                     }}
                   >
-                    <img
-                      className="card-img-top"
-                      src={
-                        opportunity.photo_url ||
-                        "https://via.placeholder.com/100x225?text=Your+Opportunity"
-                      }
-                      alt={opportunity.title}
-                      style={{ height: "225px", objectFit: "cover" }}
-                    />
+                    {opportunity.photo_url && (
+                      <img
+                        className="card-img-top"
+                        src={opportunity.photo_url}
+                        alt={opportunity.title}
+                        style={{ height: "225px", objectFit: "cover" }}
+                      />
+                    )}
 
                     <div className="card-body d-flex flex-column p-4">
                       <div
@@ -469,8 +510,7 @@ function YourOpportunitiesPage() {
                         <strong>Date:</strong> {opportunity.date}
                       </p>
                       <p className="card-text mb-1">
-                        <strong>Time:</strong> {opportunity.startTime} -{" "}
-                        {opportunity.endTime}
+                        <strong>Time:</strong> {formatTime(opportunity.startTime)} - {formatTime(opportunity.endTime)}
                       </p>
                       <p className="card-text mb-1">
                         <strong>Location:</strong> {opportunity.location}
@@ -478,9 +518,13 @@ function YourOpportunitiesPage() {
                       <p className="card-text mb-1">
                         <strong>Age:</strong> {opportunity.ageRequirements}
                       </p>
-                      <p className="card-text mb-3">
+                      <p className="card-text mb-1">
                         <strong>Commitment:</strong>{" "}
                         {opportunity.commitmentLevel}
+                      </p>
+                      <p className="card-text mb-3">
+                        <strong>Capacity:</strong>{" "}
+                        {opportunity.capacity}
                       </p>
 
                       <div className="d-flex justify-content-between align-items-center mt-auto">
@@ -509,8 +553,6 @@ function YourOpportunitiesPage() {
                             Delete
                           </button>
                         </div>
-
-                        <small className="text-muted">Posted</small>
                       </div>
                     </div>
                   </div>
@@ -541,6 +583,7 @@ function YourOpportunitiesPage() {
           </div>
         </div>
       </div>
+
       {deleteId && (
         <DeleteModal
           onCancel={() => setDeleteId(null)}
@@ -550,6 +593,7 @@ function YourOpportunitiesPage() {
           }}
         />
       )}
+
       {editOpportunity && (
         <EditOpportunityModal
           opportunity={editOpportunity}

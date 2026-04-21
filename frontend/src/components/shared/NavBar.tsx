@@ -108,25 +108,42 @@ function NavBar() {
               </NavLink>
             </li>
 
+            {/* Show only when logged in */}
             {user && (
-              <li className="nav-item">
-                <NavLink
-                  to="/your-opportunities"
-                  className="nav-link"
-                  style={({ isActive }) => ({
-                    ...linkStyle,
-                    color: isActive ? "#2563eb" : "#374151",
-                    fontWeight: isActive ? 700 : 600,
-                    background: isActive ? "#eff6ff" : "transparent",
-                  })}
-                >
-                  Your Opportunities
-                </NavLink>
-              </li>
+              <>
+                <li className="nav-item">
+                  <NavLink
+                    to="/your-opportunities"
+                    className="nav-link"
+                    style={({ isActive }) => ({
+                      ...linkStyle,
+                      color: isActive ? "#2563eb" : "#374151",
+                      fontWeight: isActive ? 700 : 600,
+                      background: isActive ? "#eff6ff" : "transparent",
+                    })}
+                  >
+                    Your Opportunities
+                  </NavLink>
+                </li>
+
+                <li className="nav-item">
+                  <NavLink
+                    to="/your-volunteers"
+                    className="nav-link"
+                    style={({ isActive }) => ({
+                      ...linkStyle,
+                      color: isActive ? "#2563eb" : "#374151",
+                      fontWeight: isActive ? 700 : 600,
+                      background: isActive ? "#eff6ff" : "transparent",
+                    })}
+                  >
+                    Your Volunteers
+                  </NavLink>
+                </li>
+              </>
             )}
           </ul>
 
-          {/* Right Side */}
           <SignInDropdown />
         </div>
       </div>

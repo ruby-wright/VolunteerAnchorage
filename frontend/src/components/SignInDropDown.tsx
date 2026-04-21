@@ -104,6 +104,7 @@ function SignInDropdown() {
         data-bs-toggle="dropdown"
         data-bs-auto-close="true"
         disabled={loading}
+        style={{ backgroundColor: "#2563eb", borderColor: "#2563eb" }}
       >
         {user ? "Account" : "Sign In"}
       </button>
@@ -115,6 +116,13 @@ function SignInDropdown() {
         {user ? (
           <>
             <p className="mb-3">Signed in as {user.email}</p>
+
+            <Link
+              to="/organization-profile"
+              className="btn btn-outline-primary w-100 mb-2"
+            >
+              Edit Profile
+            </Link>
 
             <button
               type="button"
