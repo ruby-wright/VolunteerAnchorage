@@ -5,8 +5,7 @@ import {
 } from "../api/organizations";
 
 type ProfileFormData = {
-  name: string;
-  description: string;
+  name: string
   contact_name: string;
   contact_email: string;
   phone_number: string;
@@ -16,7 +15,6 @@ type ProfileFormData = {
 function OrganizationProfilePage() {
   const [formData, setFormData] = useState<ProfileFormData>({
     name: "",
-    description: "",
     contact_name: "",
     contact_email: "",
     phone_number: "",
@@ -35,7 +33,6 @@ function OrganizationProfilePage() {
         if (data) {
           setFormData({
             name: data.name || "",
-            description: data.description || "",
             contact_name: data.contact_name || "",
             contact_email: data.contact_email || "",
             phone_number: data.phone_number || "",
@@ -99,17 +96,6 @@ function OrganizationProfilePage() {
               value={formData.name}
               onChange={handleChange}
               required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label">Description</label>
-            <textarea
-              className="form-control"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={4}
             />
           </div>
 
