@@ -8,7 +8,7 @@ function Footer() {
     >
       <div className="container-fluid p-4 pb-0">
         <section>
-          <div className="row">
+          <div className="center text-center p-3">
             <div>
               <img
                 className="mb-4"
