@@ -3,8 +3,10 @@ import { supabase } from "../lib/supabaseClient";
 type RegisterOrganizationData = {
   organizationName: string;
   organizationEmail: string;
+  websiteUrl: string;
   contactName: string;
   contactEmail: string;
+  phoneNumber: string;
   password: string;
 };
 
@@ -94,8 +96,10 @@ export async function registerOrganization(
     org_id: user.id,
     name: formData.organizationName,
     organization_email: formData.organizationEmail,
+    website_url: formData.websiteUrl,
     contact_name: formData.contactName,
     contact_email: formData.contactEmail,
+    phone_number: formData.phoneNumber,
   });
 
   if (insertError) {
