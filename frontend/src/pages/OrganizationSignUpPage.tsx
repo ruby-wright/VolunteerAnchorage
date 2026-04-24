@@ -6,8 +6,10 @@ import { registerOrganization } from "../api/organizations";
 type FormData = {
   organizationName: string;
   organizationEmail: string;
+  websiteUrl: string;
   contactName: string;
   contactEmail: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
 };
@@ -16,8 +18,10 @@ function OrganizationSignUpPage() {
   const [formData, setFormData] = useState<FormData>({
     organizationName: "",
     organizationEmail: "",
+    websiteUrl: "",
     contactName: "",
     contactEmail: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
   });
@@ -43,8 +47,10 @@ function OrganizationSignUpPage() {
       await registerOrganization({
         organizationName: formData.organizationName,
         organizationEmail: formData.organizationEmail,
+        websiteUrl: formData.websiteUrl,
         contactName: formData.contactName,
         contactEmail: formData.contactEmail,
+        phoneNumber: formData.phoneNumber,
         password: formData.password,
       });
 
@@ -53,8 +59,10 @@ function OrganizationSignUpPage() {
       setFormData({
         organizationName: "",
         organizationEmail: "",
+        websiteUrl: "",
         contactName: "",
         contactEmail: "",
+        phoneNumber: "",
         password: "",
         confirmPassword: "",
       });
@@ -102,6 +110,18 @@ function OrganizationSignUpPage() {
             />
           </div>
 
+          <div className="form-group">
+            <label htmlFor="websiteUrl">Website URL</label>
+            <input
+              id="websiteUrl"
+              name="websiteUrl"
+              type="url"
+              placeholder="https://yourorganization.org"
+              value={formData.websiteUrl}
+              onChange={handleChange}
+            />
+          </div>
+
           <h3 className="section-title">Primary Contact</h3>
 
           <div className="form-group">
@@ -127,6 +147,18 @@ function OrganizationSignUpPage() {
               value={formData.contactEmail}
               onChange={handleChange}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="phoneNumber">Phone Number</label>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              placeholder="(907) 123-4567"
+              value={formData.phoneNumber}
+              onChange={handleChange}
             />
           </div>
 
